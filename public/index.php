@@ -1,18 +1,19 @@
 <?php
 
-require_once dirname(__DIR__).'/vendor/autoload.php';
-
 define('BASE_PATH', dirname(__DIR__));
+
+require_once BASE_PATH.'/vendor/autoload.php';
 
 use Framework\Http\Kernel;
 use Framework\Http\Request;
-use Framework\Routing\Router;
+use Framework\Routing\RouterInterface;
 
 $request = Request::createFromGlobals();
 
-$router = new Router();
+$container = include BASE_PATH.'/config/services.php';
 
-$kernel = new Kernel($router);
+$router = $container->get(RouterInterface::class);
+$kernel = $container->get(Kernel::class);
+
 $response = $kernel->handle($request);
-
 $response->send();
