@@ -9,17 +9,28 @@ class PostController extends AbstractController
 {
     public function index()
     {
-        $twig = $this->container->get('twig');
-        
-        $content = '<h1>Posts</h1>';
-
-        return new Response($content);
+        return $this->render('index.html.twig');
     }
 
     public function show(int $id): Response
     {
-        $content = "<h1>Post - $id</h1>";
+        return $this->render('show.html.twig', [
+            'postId' => $id
+        ]);
+    }
 
-        return new Response($content);
+    public function create(): Response
+    {
+        return $this->render('create.html.twig');
+    }
+
+    public function login(): Response
+    {
+        return $this->render('login.html.twig');
+    }
+
+    public function registration(): Response
+    {
+        return $this->render('registration.html.twig');
     }
 }
