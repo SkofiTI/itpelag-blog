@@ -7,11 +7,6 @@
         }
     ],
     "minimum-stability": "dev",
-    "autoload-dev": {
-        "psr-4": {
-            "Framework\\Tests\\": "tests/"
-        }
-    },
     "autoload": {
         "psr-4": {
             "Framework\\": "src/"
@@ -19,10 +14,10 @@
     },
     "require": {
         "nikic/fast-route": "^1.3",
-        "psr/container": "^2.0@dev"
+        "league/container": "^4.2",
+        "symfony/dotenv": "^7.0.4"
     },
     "require-dev": {
-        "phpunit/phpunit": "^11.2@dev",
-        "symfony/var-dumper": "7.1.x-dev"
+        "symfony/var-dumper": "^7.0"
     }
 }
