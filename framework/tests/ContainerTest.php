@@ -35,4 +35,14 @@ class ContainerTest extends TestCase
         $this->assertTrue($container->has('test-class'));
         $this->assertFalse($container->has('no-class'));
     }
+
+    public function test_recursively_autowired()
+    {
+        $container = new Container();
+
+        $container->add('test-class', TestClass::class);
+        $testClass = $container->get('test-class');
+
+        $this->assertInstanceOf(SecondTestClass::class, $testClass->getSecondTestClass());
+    }
 }
