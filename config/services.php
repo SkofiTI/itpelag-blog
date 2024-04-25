@@ -1,5 +1,6 @@
 <?php
 
+use Framework\Controller\AbstractController;
 use Framework\Http\Kernel;
 use Framework\Routing\Router;
 use Framework\Routing\RouterInterface;
@@ -33,7 +34,10 @@ $container->add(Kernel::class)
 
 $container->addShared('twig-loader', FilesystemLoader::class)
     ->addArgument(new StringArgument($viewsPath));
-$container->addShared(Environment::class)
+$container->addShared('twig', Environment::class)
     ->addArgument('twig-loader');
+
+$container->inflector(AbstractController::class)
+    ->invokeMethod('setContainer', [$container]);
 
 return $container;

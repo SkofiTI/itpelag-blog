@@ -2,17 +2,15 @@
 
 namespace App\Controllers;
 
+use Framework\Controller\AbstractController;
 use Framework\Http\Response;
-use Twig\Environment;
 
-class PostController extends Controller
+class PostController extends AbstractController
 {
-    public function __construct(
-        public readonly Environment $twig
-    ){}
-
     public function index()
     {
+        $twig = $this->container->get('twig');
+        
         $content = '<h1>Posts</h1>';
 
         return new Response($content);
