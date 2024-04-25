@@ -1,13 +1,18 @@
 {
     "autoload": {
         "psr-4": {
-            "App\\": "app/",
-            "Framework\\": "framework/"
+            "App\\": "app/"
         }
     },
+    "repositories": [
+        {
+            "type": "path",
+            "url": "framework"
+        }
+    ],
     "require": {
         "php": "^8.3",
-        "nikic/fast-route": "^1.3"
+        "skofi/php-framework": "dev-main"
     },
     "require-dev": {
         "symfony/var-dumper": "^7.0"
