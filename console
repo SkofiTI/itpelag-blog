@@ -1,0 +1,17 @@
+#!/usr/bin/env php
+
+<?php
+
+use Framework\Console\Kernel;
+
+define('BASE_PATH', dirname(__FILE__));
+
+require_once BASE_PATH.'/vendor/autoload.php';
+
+$container = include BASE_PATH.'/config/services.php';
+
+$kernel = $container->get(Kernel::class);
+
+$status = $kernel->handle();
+
+exit($status);

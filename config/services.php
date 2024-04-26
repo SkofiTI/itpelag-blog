@@ -1,7 +1,8 @@
 <?php
 
 use Doctrine\DBAL\Connection;
-use Doctrine\DBAL\Tools\DsnParser;
+use Framework\Console\Application;
+use Framework\Console\Kernel as ConsoleKernel;
 use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
 use Framework\Http\Kernel;
@@ -26,6 +27,8 @@ $databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));
 
+$container->add('framework-commands-namespace', new StringArgument('Framework\\Console\\Commands\\'));
+
 $container->add('APP_ENV', new StringArgument($appEnv));
 
 $container->add(RouterInterface::class, Router::class);
@@ -35,6 +38,13 @@ $container->extend(RouterInterface::class)
 $container->add(Kernel::class)
     ->addArgument(RouterInterface::class)
     ->addArgument($container);
+
+$container->add(Application::class)
+    ->addArgument($container);
+
+$container->add(ConsoleKernel::class)
+    ->addArgument($container)
+    ->addArgument(Application::class);
 
 $container->addShared('twig-loader', FilesystemLoader::class)
     ->addArgument(new StringArgument($viewsPath));
