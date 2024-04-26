@@ -24,6 +24,11 @@ class PostController extends AbstractController
         return $this->render('create.html.twig');
     }
 
+    public function store(): Response
+    {
+        return $this->render('create.html.twig');
+    }
+
     public function login(): Response
     {
         return $this->render('login.html.twig');
