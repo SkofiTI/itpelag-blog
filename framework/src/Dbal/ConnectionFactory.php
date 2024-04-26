@@ -17,8 +17,6 @@ class ConnectionFactory
             'url' => $this->connectionUrl
         ]);
 
-        $connection->setAutoCommit(false);
-
         return $connection;
     }
 }

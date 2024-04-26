@@ -3,11 +3,16 @@
 namespace App\Controllers;
 
 use App\Entities\Post;
+use App\Services\PostService;
 use Framework\Controller\AbstractController;
 use Framework\Http\Response;
 
 class PostController extends AbstractController
 {
+    public function __construct(
+        private PostService $postService
+    ){}
+
     public function index()
     {
         return $this->render('index.html.twig');
@@ -31,6 +36,8 @@ class PostController extends AbstractController
             $this->request->getPostData('title'),
             $this->request->getPostData('body'),
         );
+
+        $post = $this->postService->save($post);
 
         return $this->render('create.html.twig');
     }
