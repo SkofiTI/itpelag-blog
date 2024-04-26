@@ -19,7 +19,7 @@ class Application
 
         $commandName = $argv[1] ?? null;
 
-        if (!$commandName) {
+        if (is_null($commandName)) {
             throw new ConsoleException('Invalid console command');
         }
 
@@ -28,7 +28,7 @@ class Application
 
         $status = $command->execute($options);
 
-        return 0;
+        return $status;
     }
 
     private function parseOptions(array $args): array
