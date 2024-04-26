@@ -2,7 +2,6 @@
 
 namespace Framework\Http;
 
-use Doctrine\DBAL\Connection;
 use Framework\Http\Exceptions\HttpException;
 use Framework\Routing\RouterInterface;
 use Psr\Container\ContainerInterface;

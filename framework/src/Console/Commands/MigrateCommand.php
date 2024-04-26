@@ -13,7 +13,8 @@ class MigrateCommand implements CommandInterface
     private const MIGRATIONS_TABLE = 'migrations';
 
     public function __construct(
-        private Connection $connection
+        private Connection $connection,
+        private string $migrationsPath
     ){}
 
     public function execute(array $parameters = []): int
@@ -24,6 +25,25 @@ class MigrateCommand implements CommandInterface
             $this->connection->beginTransaction();
 
             $appliedMigrations = $this->getAppliedMigrations();
+
+            $migrationsFiles = $this->getMigrationFiles();
+
+            $migrationsToApply = array_values(array_diff($migrationsFiles, $appliedMigrations));
+            
+            $schema = new Schema();
+
+            foreach ($migrationsToApply as $migration) {
+                $migrationInstance = require $this->migrationsPath . "/$migration";
+                
+                $migrationInstance->up($schema);
+                $this->addMigration($migration);
+            }
+
+            $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
+            
+            foreach ($sqlArray as $sql) {
+                $this->connection->executeQuery($sql);
+            }
 
             $this->connection->commit();
         } catch (\Throwable $e) {
@@ -70,5 +90,26 @@ class MigrateCommand implements CommandInterface
             ->from(self::MIGRATIONS_TABLE)
             ->executeQuery()
             ->fetchFirstColumn();
+    }
+
+    private function getMigrationFiles(): array
+    {
+        $migrationFiles = scandir($this->migrationsPath);
+        
+        $filteredFiles = array_filter($migrationFiles, function ($file) {
+            return !in_array($file, ['.', '..']);
+        });
+
+        return array_values($filteredFiles);
+    }
+
+    private function addMigration(string $migration): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $queryBuilder->insert(self::MIGRATIONS_TABLE)
+            ->values(['migration' => ':migration'])
+            ->setParameter('migration', $migration)
+            ->executeQuery();
     }
 }
