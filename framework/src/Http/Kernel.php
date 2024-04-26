@@ -4,7 +4,7 @@ namespace Framework\Http;
 
 use Framework\Http\Exceptions\HttpException;
 use Framework\Routing\RouterInterface;
-use League\Container\Container;
+use Psr\Container\ContainerInterface;
 
 class Kernel
 {
@@ -12,7 +12,7 @@ class Kernel
 
     public function __construct(
         private RouterInterface $router,
-        private Container $container,
+        private ContainerInterface $container,
     ){
         $this->appEnv = $this->container->get('APP_ENV');
     }
