@@ -5,6 +5,7 @@ namespace App\Controllers;
 use App\Entities\Post;
 use App\Services\PostService;
 use Framework\Controller\AbstractController;
+use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
 
 class PostController extends AbstractController
@@ -15,15 +16,15 @@ class PostController extends AbstractController
 
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('index.html.twig', [
+            'posts' => $this->postService->getAll()
+        ]);
     }
 
     public function show(int $id): Response
     {
-        $post = $this->postService->findOrFail($id);
-
         return $this->render('show.html.twig', [
-            'post' => $post
+            'post' => $this->postService->findOrFail($id)
         ]);
     }
 
@@ -41,7 +42,7 @@ class PostController extends AbstractController
 
         $post = $this->postService->save($post);
 
-        return $this->render('create.html.twig');
+        return new RedirectResponse('/');
     }
 
     public function login(): Response

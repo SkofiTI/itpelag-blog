@@ -72,4 +72,16 @@ class PostService
 
         return $post;
     }
+
+    public function getAll(): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('posts')
+            ->executeQuery();
+        
+        return $result->fetchAllAssociative();
+    }
 }
