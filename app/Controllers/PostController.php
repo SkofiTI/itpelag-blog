@@ -2,20 +2,29 @@
 
 namespace App\Controllers;
 
+use App\Entities\Post;
+use App\Services\PostService;
 use Framework\Controller\AbstractController;
+use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
 
 class PostController extends AbstractController
 {
+    public function __construct(
+        private PostService $postService
+    ){}
+
     public function index()
     {
-        return $this->render('index.html.twig');
+        return $this->render('index.html.twig', [
+            'posts' => $this->postService->getAll()
+        ]);
     }
 
     public function show(int $id): Response
     {
         return $this->render('show.html.twig', [
-            'postId' => $id
+            'post' => $this->postService->findOrFail($id)
         ]);
     }
 
@@ -26,7 +35,14 @@ class PostController extends AbstractController
 
     public function store(): Response
     {
-        return $this->render('create.html.twig');
+        $post = Post::create(
+            $this->request->getPostData('title'),
+            $this->request->getPostData('body'),
+        );
+
+        $post = $this->postService->save($post);
+
+        return new RedirectResponse('/');
     }
 
     public function login(): Response

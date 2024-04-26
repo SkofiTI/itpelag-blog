@@ -13,7 +13,7 @@ return new class
             'autoincrement' => true,
         ]);
         $table->addColumn('title', Types::STRING);
-        $table->addColumn('body', Types::STRING);
+        $table->addColumn('body', Types::TEXT);
         $table->addColumn('created_at', Types::DATETIME_IMMUTABLE, [
             'default' => 'CURRENT_TIMESTAMP'
         ]);

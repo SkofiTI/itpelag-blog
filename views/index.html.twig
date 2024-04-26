@@ -2,29 +2,14 @@
 
 {% block main %}
     <div class="list-group">
-        <a href="#" class="list-group-item list-group-item-action" aria-current="true">
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Заголовок поста 1</h5>
-            <small>3 дня назад</small>
-            </div>
-            <p class="mb-1">Некоторый заполнитель в абзаце.</p>
-            <small>Автор</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Заголовок поста 2</h5>
-            <small>3 дня назад</small>
-            </div>
-            <p class="mb-1">Некоторый заполнитель в абзаце.</p>
-            <small class="text-muted">Автор</small>
-        </a>
-        <a href="#" class="list-group-item list-group-item-action">
-            <div class="d-flex w-100 justify-content-between">
-            <h5 class="mb-1">Заголовок поста 3</h5>
-            <small>3 дня назад</small>
-            </div>
-            <p class="mb-1">Некоторый заполнитель в абзаце.</p>
-            <small class="text-muted">Автор</small>
-        </a>
+        {% for post in posts %}  
+            <a href="/posts/{{ post.id }}" class="list-group-item mb-3 border-top border-dark rounded-0" aria-current="true">
+                <div class="d-flex w-100 justify-content-between">
+                <h5 class="mb-1">{{ post.title }}</h5>
+                <small>{{ post.created_at }}</small>
+                </div>
+                <p class="mb-1">{{ post.body }}</p>
+            </a>
+        {% endfor %}
     </div>
 {% endblock %}

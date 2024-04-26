@@ -44,8 +44,6 @@ class MigrateCommand implements CommandInterface
             foreach ($sqlArray as $sql) {
                 $this->connection->executeQuery($sql);
             }
-
-            $this->connection->commit();
         } catch (\Throwable $e) {
             $this->connection->rollBack();
 
