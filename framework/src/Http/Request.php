@@ -26,4 +26,9 @@ class Request
     {
         return $this->server['REQUEST_METHOD'];
     }
+
+    public function getPostData(string $key): string
+    {
+        return $this->postData[$key];
+    }
 }

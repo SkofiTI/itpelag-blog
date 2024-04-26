@@ -2,6 +2,7 @@
 
 namespace App\Controllers;
 
+use App\Entities\Post;
 use Framework\Controller\AbstractController;
 use Framework\Http\Response;
 
@@ -26,6 +27,11 @@ class PostController extends AbstractController
 
     public function store(): Response
     {
+        $post = Post::create(
+            $this->request->getPostData('title'),
+            $this->request->getPostData('body'),
+        );
+
         return $this->render('create.html.twig');
     }
 
