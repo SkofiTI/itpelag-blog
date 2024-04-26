@@ -7,7 +7,7 @@ use FastRoute\RouteCollector;
 use Framework\Http\Exceptions\MethodNotAllowedException;
 use Framework\Http\Exceptions\RouteNotFoundException;
 use Framework\Http\Request;
-use League\Container\Container;
+use Psr\Container\ContainerInterface;
 
 use function FastRoute\simpleDispatcher;
 
@@ -15,7 +15,7 @@ class Router implements RouterInterface
 {
     private array $routes;
 
-    public function dispatch(Request $request, Container $container): array
+    public function dispatch(Request $request, ContainerInterface $container): array
     {
        [$handler, $vars] = $this->extractRouteInfo($request);
 

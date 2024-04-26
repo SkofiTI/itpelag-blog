@@ -1,6 +1,9 @@
 <?php
 
+use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Tools\DsnParser;
 use Framework\Controller\AbstractController;
+use Framework\Dbal\ConnectionFactory;
 use Framework\Http\Kernel;
 use Framework\Routing\Router;
 use Framework\Routing\RouterInterface;
@@ -18,6 +21,7 @@ $dotenv->load(BASE_PATH ."/.env");
 $routes = include BASE_PATH.'/routes/web.php';
 $appEnv = $_ENV['APP_ENV'] ?? 'local';
 $viewsPath = BASE_PATH.'/views';
+$databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb4';
 
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));
@@ -39,5 +43,12 @@ $container->addShared('twig', Environment::class)
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
+
+$container->add(ConnectionFactory::class)
+    ->addArgument(new StringArgument($databaseUrl));
+
+$container->addShared(Connection::class, function () use ($container) : Connection {
+    return $container->get(ConnectionFactory::class)->create();
+});
 
 return $container;
