@@ -35,4 +35,29 @@ class PostService
         
         return $post;
     }
+
+    public function find(int $id): ?Post
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('posts')
+            ->where('id = :id')
+            ->setParameter('id', $id)
+            ->executeQuery();
+        
+        $postData = $result->fetchAssociative();
+
+        if (!$postData) {
+            return null;
+        }
+        
+        return Post::create(
+            title: $postData['title'],
+            body: $postData['body'],
+            id: $postData['id'],
+            createdAt: new \DateTimeImmutable($postData['created_at']),
+        );
+    }
 }

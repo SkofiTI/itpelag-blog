@@ -2,7 +2,7 @@
 
 {% block main %}
     <div class="bg-body-tertiary p-5 rounded">
-        <h1>Post - {{ postId }}</h1>
-        <p class="lead">Пример поста</p>
+        <h1>Post - {{ post.title }}</h1>
+        <p class="lead">{{ post.body }}</p>
     </div>
 {% endblock %}
