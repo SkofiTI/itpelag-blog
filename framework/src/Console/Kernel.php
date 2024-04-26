@@ -17,7 +17,7 @@ class Kernel
 
         $status = $this->application->run();
 
-        return 0;
+        return $status;
     }
 
     private function registerCommands(): void

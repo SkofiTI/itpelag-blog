@@ -2,6 +2,7 @@
 
 use Doctrine\DBAL\Connection;
 use Framework\Console\Application;
+use Framework\Console\Commands\MigrateCommand;
 use Framework\Console\Kernel as ConsoleKernel;
 use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
@@ -60,5 +61,8 @@ $container->add(ConnectionFactory::class)
 $container->addShared(Connection::class, function () use ($container) : Connection {
     return $container->get(ConnectionFactory::class)->create();
 });
+
+$container->add('console:migrate', MigrateCommand::class)
+    ->addArgument(Connection::class);
 
 return $container;
