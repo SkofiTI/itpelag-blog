@@ -10,12 +10,14 @@ use Framework\Console\CommandInterface;
 class MigrateCommand implements CommandInterface
 {
     private string $name = 'migrate';
+
     private const MIGRATIONS_TABLE = 'migrations';
 
     public function __construct(
         private Connection $connection,
         private string $migrationsPath
-    ){}
+    ) {
+    }
 
     public function execute(array $parameters = []): int
     {
@@ -29,18 +31,18 @@ class MigrateCommand implements CommandInterface
             $migrationsFiles = $this->getMigrationFiles();
 
             $migrationsToApply = array_values(array_diff($migrationsFiles, $appliedMigrations));
-            
+
             $schema = new Schema();
 
             foreach ($migrationsToApply as $migration) {
-                $migrationInstance = require $this->migrationsPath . "/$migration";
-                
+                $migrationInstance = require $this->migrationsPath."/$migration";
+
                 $migrationInstance->up($schema);
                 $this->addMigration($migration);
             }
 
             $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
-            
+
             foreach ($sqlArray as $sql) {
                 $this->connection->executeQuery($sql);
             }
@@ -57,11 +59,11 @@ class MigrateCommand implements CommandInterface
     {
         $schemaManager = $this->connection->createSchemaManager();
 
-        if (!$schemaManager->tablesExist(self::MIGRATIONS_TABLE)) {
+        if (! $schemaManager->tablesExist(self::MIGRATIONS_TABLE)) {
             $schema = new Schema();
-    
+
             $table = $schema->createTable(self::MIGRATIONS_TABLE);
-            
+
             $table->addColumn('id', Types::INTEGER, [
                 'unsigned' => true,
                 'autoincrement' => true,
@@ -76,7 +78,7 @@ class MigrateCommand implements CommandInterface
 
             $this->connection->executeQuery($sqlArray[0]);
 
-            echo 'Migrations table created' . PHP_EOL;
+            echo 'Migrations table created'.PHP_EOL;
         }
     }
 
@@ -93,9 +95,9 @@ class MigrateCommand implements CommandInterface
     private function getMigrationFiles(): array
     {
         $migrationFiles = scandir($this->migrationsPath);
-        
+
         $filteredFiles = array_filter($migrationFiles, function ($file) {
-            return !in_array($file, ['.', '..']);
+            return ! in_array($file, ['.', '..']);
         });
 
         return array_values($filteredFiles);

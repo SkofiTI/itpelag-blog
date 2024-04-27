@@ -15,6 +15,7 @@
         "skofi/php-framework": "dev-main"
     },
     "require-dev": {
-        "symfony/var-dumper": "^7.0"
+        "symfony/var-dumper": "^7.0",
+        "laravel/pint": "^1.15"
     }
 }

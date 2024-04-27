@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "fef7dfcb6fa829ccd4a1c678842cdf70",
+    "content-hash": "fd1e61abe636e3351e5fcafe30d860a0",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -640,7 +640,7 @@
             "dist": {
                 "type": "path",
                 "url": "framework",
-                "reference": "a403cf5348b0909f0fb793a0fb73ac31b88143f5"
+                "reference": "c1392f0722c08a2bd5fc8daeb4ec13494961d345"
             },
             "require": {
                 "doctrine/dbal": "^3.8.4",
@@ -650,6 +650,7 @@
                 "twig/twig": "^3.9"
             },
             "require-dev": {
+                "laravel/pint": "^1.15",
                 "symfony/var-dumper": "^7.0"
             },
             "type": "library",
@@ -1129,6 +1130,72 @@
         }
     ],
     "packages-dev": [
+        {
+            "name": "laravel/pint",
+            "version": "v1.15.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/laravel/pint.git",
+                "reference": "2c9f8004899815f3f0ee3cb28ef7281e2b589134"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/laravel/pint/zipball/2c9f8004899815f3f0ee3cb28ef7281e2b589134",
+                "reference": "2c9f8004899815f3f0ee3cb28ef7281e2b589134",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "ext-mbstring": "*",
+                "ext-tokenizer": "*",
+                "ext-xml": "*",
+                "php": "^8.1.0"
+            },
+            "require-dev": {
+                "friendsofphp/php-cs-fixer": "^3.54.0",
+                "illuminate/view": "^10.48.8",
+                "larastan/larastan": "^2.9.5",
+                "laravel-zero/framework": "^10.3.0",
+                "mockery/mockery": "^1.6.11",
+                "nunomaduro/termwind": "^1.15.1",
+                "pestphp/pest": "^2.34.7"
+            },
+            "bin": [
+                "builds/pint"
+            ],
+            "type": "project",
+            "autoload": {
+                "psr-4": {
+                    "App\\": "app/",
+                    "Database\\Seeders\\": "database/seeders/",
+                    "Database\\Factories\\": "database/factories/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Nuno Maduro",
+                    "email": "enunomaduro@gmail.com"
+                }
+            ],
+            "description": "An opinionated code formatter for PHP.",
+            "homepage": "https://laravel.com",
+            "keywords": [
+                "format",
+                "formatter",
+                "lint",
+                "linter",
+                "php"
+            ],
+            "support": {
+                "issues": "https://github.com/laravel/pint/issues",
+                "source": "https://github.com/laravel/pint"
+            },
+            "time": "2024-04-23T15:42:34+00:00"
+        },
         {
             "name": "symfony/var-dumper",
             "version": "v7.0.6",
