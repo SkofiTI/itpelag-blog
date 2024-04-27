@@ -18,6 +18,7 @@ return new class
             'default' => 'CURRENT_TIMESTAMP',
         ]);
         $table->setPrimaryKey(['id']);
+        $table->addUniqueIndex(['title']);
     }
 
     public function down(Schema $schema): void

@@ -6,6 +6,9 @@ use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
 use Framework\Routing\Router;
 use Framework\Routing\RouterInterface;
+use Framework\Session\Session;
+use Framework\Session\SessionInterface;
+use Framework\Template\TwigFactory;
 use League\Container\Argument\Literal\ArrayArgument;
 use League\Container\Argument\Literal\StringArgument;
 use League\Container\Container;
@@ -26,18 +29,15 @@ $databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));
 
+$container->add('APP_ENV', new StringArgument($appEnv));
+
 $container->add(ContainerInterface::class, $container);
 
-$container->add('APP_ENV', new StringArgument($appEnv));
+$container->add(SessionInterface::class, Session::class);
 
 $container->addShared(RouterInterface::class, Router::class);
 $container->extend(RouterInterface::class)
     ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
-
-$container->addShared('twig-loader', FilesystemLoader::class)
-    ->addArgument(new StringArgument($viewsPath));
-$container->addShared('twig', Environment::class)
-    ->addArgument('twig-loader');
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
@@ -49,8 +49,20 @@ $container->addShared(Connection::class, function () use ($container): Connectio
     return $container->get(ConnectionFactory::class)->create();
 });
 
+$container->add('twig-factory', TwigFactory::class)
+    ->addArguments([
+        new StringArgument($viewsPath),
+        SessionInterface::class
+    ]);
+
+$container->addShared('twig', function () use ($container): Environment {
+    return $container->get('twig-factory')->create();
+});
+
 $container->add('console:migrate', MigrateCommand::class)
-    ->addArgument(Connection::class)
-    ->addArgument(new StringArgument(BASE_PATH.'/database/migrations'));
+    ->addArguments([
+        Connection::class,
+        new StringArgument(BASE_PATH.'/database/migrations')
+    ]);
 
 return $container;

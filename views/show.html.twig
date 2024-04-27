@@ -1,6 +1,13 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block main %}
+    {% if session().hasFlash('success') %}
+        <div class="alert alert-success text-center">
+            {% for message in session().getFlash('success') %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="bg-body-tertiary p-5 rounded">
         <h1>{{ post.title }}</h1>
         <p class="lead">{{ post.body }}</p>
