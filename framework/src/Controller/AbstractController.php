@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 abstract class AbstractController
 {
     protected ?ContainerInterface $container = null;
+
     protected Request $request;
 
     public function setContainer(ContainerInterface $container)
@@ -21,14 +22,14 @@ abstract class AbstractController
         $this->request = $request;
     }
 
-    public function render(string $view, array $data = [], Response $response = null): Response
+    public function render(string $view, array $data = [], ?Response $response = null): Response
     {
-       $content = $this->container->get('twig')->render($view, $data);
+        $content = $this->container->get('twig')->render($view, $data);
 
-       $response ??= new Response();
-       
-       $response->setContent($content);
+        $response ??= new Response();
 
-       return $response;
+        $response->setContent($content);
+
+        return $response;
     }
 }

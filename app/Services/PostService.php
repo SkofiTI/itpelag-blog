@@ -10,7 +10,8 @@ class PostService
 {
     public function __construct(
         private Connection $connection
-    ){}
+    ) {
+    }
 
     public function save(Post $post): Post
     {
@@ -29,11 +30,11 @@ class PostService
                 'created_at' => $post->getCreatedAt()->format('Y-m-d H:i:s'),
             ])
             ->executeQuery();
-        
+
         $id = $this->connection->lastInsertId();
 
         $post->setId($id);
-        
+
         return $post;
     }
 
@@ -47,13 +48,13 @@ class PostService
             ->where('id = :id')
             ->setParameter('id', $id)
             ->executeQuery();
-        
+
         $postData = $result->fetchAssociative();
 
-        if (!$postData) {
+        if (! $postData) {
             return null;
         }
-        
+
         return Post::create(
             title: $postData['title'],
             body: $postData['body'],
@@ -81,7 +82,7 @@ class PostService
             ->select('*')
             ->from('posts')
             ->executeQuery();
-        
+
         return $result->fetchAllAssociative();
     }
 }

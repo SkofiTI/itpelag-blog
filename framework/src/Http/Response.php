@@ -8,7 +8,7 @@ class Response
         private string $content = '',
         private int $statusCode = 200,
         private array $headers = [],
-    ){
+    ) {
         http_response_code($statusCode);
     }
 
@@ -17,10 +17,9 @@ class Response
         echo $this->content;
     }
 
-    public function setContent(string $content): Response
+    public function setContent(string $content)
     {
         $this->content = $content;
-        return $this;
     }
 
     public function getHeader(string $key)

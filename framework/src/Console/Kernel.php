@@ -6,10 +6,13 @@ use Psr\Container\ContainerInterface;
 
 class Kernel
 {
+    const COMMAND_NAMESPACE = 'Framework\\Console\\Commands\\';
+
     public function __construct(
         private ContainerInterface $container,
         private Application $application
-    ){}
+    ) {
+    }
 
     public function handle(): int
     {
@@ -23,20 +26,19 @@ class Kernel
     private function registerCommands(): void
     {
         $commandFiles = new \DirectoryIterator(__DIR__.'/Commands');
-        $commandNamespace = $this->container->get('framework-commands-namespace');
 
         foreach ($commandFiles as $commandFile) {
-            if (!$commandFile->isFile()) {
+            if (! $commandFile->isFile()) {
                 continue;
             }
 
-            $command = $commandNamespace.pathinfo($commandFile, PATHINFO_FILENAME);
-            
+            $command = self::COMMAND_NAMESPACE.pathinfo($commandFile, PATHINFO_FILENAME);
+
             if (is_subclass_of($command, CommandInterface::class)) {
                 $name = (new \ReflectionClass($command))
                     ->getProperty('name')
                     ->getDefaultValue();
-                
+
                 $this->container->add("console:$name", $command);
             }
         }

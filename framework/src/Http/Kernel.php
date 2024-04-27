@@ -11,22 +11,23 @@ class Kernel
     private string $appEnv = '';
 
     public function __construct(
-        private RouterInterface $router,
         private ContainerInterface $container,
-    ){
+    ) {
         $this->appEnv = $this->container->get('APP_ENV');
     }
 
     public function handle(Request $request): Response
     {
         try {
-            [$routeHandler, $vars] = $this->router->dispatch($request, $this->container);
-            
+            [$routeHandler, $vars] = $this->container
+                ->get(RouterInterface::class)
+                ->dispatch($request, $this->container);
+
             $response = call_user_func_array($routeHandler, $vars);
         } catch (\Exception $e) {
             $response = $this->createExceptionResponse($e);
         }
-        
+
         return $response;
     }
 

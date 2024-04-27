@@ -9,7 +9,8 @@ class Application
 {
     public function __construct(
         private ContainerInterface $container
-    ){}
+    ) {
+    }
 
     public function run(): int
     {

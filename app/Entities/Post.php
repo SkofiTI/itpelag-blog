@@ -9,15 +9,15 @@ class Post
         private string $title,
         private string $body,
         private ?\DateTimeImmutable $createdAt,
-    ){}
+    ) {
+    }
 
     public static function create(
         string $title,
         string $body,
-        int $id = null, 
-        \DateTimeImmutable $createdAt = null
-    ): static
-    {
+        ?int $id = null,
+        ?\DateTimeImmutable $createdAt = null
+    ): static {
         return new static($id, $title, $body, $createdAt ?? new \DateTimeImmutable());
     }
 
@@ -40,7 +40,6 @@ class Post
     {
         $this->createdAt = $createdAt;
     }
-    
 
     public function getId(): ?int
     {

@@ -9,6 +9,7 @@ class HttpException extends \Exception
     public function setStatusCode(int $statusCode): HttpException
     {
         $this->statusCode = $statusCode;
+
         return $this;
     }
 

@@ -12,19 +12,20 @@ class PostController extends AbstractController
 {
     public function __construct(
         private PostService $postService
-    ){}
+    ) {
+    }
 
     public function index()
     {
         return $this->render('index.html.twig', [
-            'posts' => $this->postService->getAll()
+            'posts' => $this->postService->getAll(),
         ]);
     }
 
     public function show(int $id): Response
     {
         return $this->render('show.html.twig', [
-            'post' => $this->postService->findOrFail($id)
+            'post' => $this->postService->findOrFail($id),
         ]);
     }
 

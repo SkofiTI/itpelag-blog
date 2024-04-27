@@ -9,12 +9,13 @@ class ConnectionFactory
 {
     public function __construct(
         private readonly string $connectionUrl
-    ){}
+    ) {
+    }
 
     public function create(): Connection
     {
         $connection = DriverManager::getConnection([
-            'url' => $this->connectionUrl
+            'url' => $this->connectionUrl,
         ]);
 
         return $connection;
