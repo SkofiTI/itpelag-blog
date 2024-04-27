@@ -4,6 +4,8 @@ use Doctrine\DBAL\Connection;
 use Framework\Console\Commands\MigrateCommand;
 use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
+use Framework\Http\Middleware\RequestHandler;
+use Framework\Http\Middleware\RequestHandlerInterface;
 use Framework\Routing\Router;
 use Framework\Routing\RouterInterface;
 use Framework\Session\Session;
@@ -16,7 +18,6 @@ use League\Container\ReflectionContainer;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Dotenv\Dotenv;
 use Twig\Environment;
-use Twig\Loader\FilesystemLoader;
 
 $dotenv = new Dotenv();
 $dotenv->load(BASE_PATH.'/.env');
@@ -35,7 +36,11 @@ $container->add(ContainerInterface::class, $container);
 
 $container->add(SessionInterface::class, Session::class);
 
-$container->addShared(RouterInterface::class, Router::class);
+$container->add(RequestHandlerInterface::class, RequestHandler::class)
+    ->addArgument($container);
+
+$container->addShared(RouterInterface::class, Router::class)
+    ->addArgument($container);
 $container->extend(RouterInterface::class)
     ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 

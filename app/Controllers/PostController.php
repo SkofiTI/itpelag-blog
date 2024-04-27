@@ -13,7 +13,6 @@ class PostController extends AbstractController
 {
     public function __construct(
         private PostService $postService,
-        private SessionInterface $session
     ) {
     }
 
@@ -45,7 +44,9 @@ class PostController extends AbstractController
 
         $post = $this->postService->save($post);
 
-        $this->session->setFlash('success', 'Пост успешно создан!');
+        $this->request
+            ->getSession()
+            ->setFlash('success', 'Пост успешно создан!');
 
         return new RedirectResponse("/posts/{$post->getId()}");
     }
