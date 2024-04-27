@@ -2,8 +2,12 @@
 
 namespace Framework\Http;
 
+use Framework\Session\SessionInterface;
+
 class Request
 {
+    private SessionInterface $session;
+
     public function __construct(
         private readonly array $getParams,
         private readonly array $postData,
@@ -31,5 +35,15 @@ class Request
     public function getPostData(string $key): string
     {
         return $this->postData[$key];
+    }
+
+    public function getSession(): SessionInterface
+    {
+        return $this->session;
+    }
+
+    public function setSession(SessionInterface $session): void
+    {
+        $this->session = $session;
     }
 }
