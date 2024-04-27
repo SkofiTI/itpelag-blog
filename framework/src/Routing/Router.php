@@ -16,13 +16,18 @@ class Router implements RouterInterface
 {
     private array $routes;
 
-    public function dispatch(Request $request, ContainerInterface $container): array
+    public function __construct(
+        private ContainerInterface $container,
+    ) {
+    }
+
+    public function dispatch(Request $request): array
     {
         [$handler, $vars] = $this->extractRouteInfo($request);
 
         if (is_array($handler)) {
             [$controllerId, $method] = $handler;
-            $controller = $container->get($controllerId);
+            $controller = $this->container->get($controllerId);
 
             if (is_subclass_of($controller, AbstractController::class)) {
                 $controller->setRequest($request);
