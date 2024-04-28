@@ -5,6 +5,7 @@ use App\Controllers\LoginController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
 use Framework\Http\Middleware\Authenticate;
+use Framework\Http\Middleware\Guest;
 use Framework\Routing\Route;
 
 return [
@@ -13,10 +14,10 @@ return [
     Route::get('/posts/create', [PostController::class, 'create']),
     Route::post('/posts', [PostController::class, 'store']),
 
-    Route::get('/login', [LoginController::class, 'index']),
-    Route::post('/login', [LoginController::class, 'login']),
-    Route::get('/register', [RegisterController::class, 'index']),
-    Route::post('/register', [RegisterController::class, 'register']),
+    Route::get('/login', [LoginController::class, 'index'], [Guest::class]),
+    Route::post('/login', [LoginController::class, 'login'], [Guest::class]),
+    Route::get('/register', [RegisterController::class, 'index'], [Guest::class]),
+    Route::post('/register', [RegisterController::class, 'register'], [Guest::class]),
 
     Route::get('/dashboard', [DashboardController::class, 'index'], [Authenticate::class]),
 ];
