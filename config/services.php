@@ -51,8 +51,6 @@ $container->addShared(RequestHandlerInterface::class, RequestHandler::class)
 
 $container->addShared(RouterInterface::class, Router::class)
     ->addArgument($container);
-$container->extend(RouterInterface::class)
-    ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
 
 $container->add(ExtractRouteInfo::class)
     ->addArgument(new ArrayArgument($routes));
