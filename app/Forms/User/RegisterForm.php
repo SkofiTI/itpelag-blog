@@ -2,6 +2,9 @@
 
 namespace App\Forms\User;
 
+use App\Entities\User;
+use App\Services\UserService;
+
 class RegisterForm
 {
     private string $name;
@@ -12,24 +15,36 @@ class RegisterForm
 
     private string $passwordConfirmation;
 
-    public function setFields(string $name, string $username, string $password, string $passwordConfirmation): void
+    public function __construct(
+        private UserService $userService
+    ) {
+    }
+
+    public function setFields(string $username, string $password, string $passwordConfirmation): void
     {
-        $this->name = $name;
         $this->username = $username;
         $this->password = $password;
         $this->passwordConfirmation = $passwordConfirmation;
+    }
+
+    public function save(): User
+    {
+        $user = User::create(
+            username: $this->username,
+            password: password_hash($this->password, PASSWORD_DEFAULT),
+        );
+
+        $user = $this->userService->store($user);
+
+        return $user;
     }
 
     public function getValidationErrors(): array
     {
         $errors = [];
 
-        if (empty($this->name)) {
-            $errors[] = 'Имя (name) является обязательным полем';
-        }
-
         if (empty($this->username)) {
-            $errors[] = 'Имя пользователя (username) является обязательным полем';
+            $errors[] = 'Имя пользователя является обязательным полем';
         }
 
         if (empty($this->password) || strlen($this->password) < 8) {

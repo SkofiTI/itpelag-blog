@@ -17,3 +17,11 @@
         </div>
     </div>
 </header>
+
+{% if session().hasFlash('success') %}
+    <div class="alert alert-success text-center">
+        {% for message in session().getFlash('success') %}
+            <p class="m-0">{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}

@@ -41,7 +41,7 @@ class PostController extends AbstractController
             $this->request->getPostData('body'),
         );
 
-        $post = $this->postService->save($post);
+        $post = $this->postService->store($post);
 
         $this->request
             ->getSession()
