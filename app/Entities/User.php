@@ -2,7 +2,9 @@
 
 namespace App\Entities;
 
-class User
+use Framework\Authentication\AuthUserInterface;
+
+class User implements AuthUserInterface
 {
     public function __construct(
         private ?int $id,
@@ -26,7 +28,7 @@ class User
         $this->id = $id;
     }
 
-    public function getId(): ?int
+    public function getId(): int
     {
         return $this->id;
     }

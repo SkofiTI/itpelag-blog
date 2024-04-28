@@ -1,6 +1,9 @@
 <?php
 
+use App\Services\UserService;
 use Doctrine\DBAL\Connection;
+use Framework\Authentication\SessionAuthentication;
+use Framework\Authentication\SessionAuthInterface;
 use Framework\Console\Commands\MigrateCommand;
 use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
@@ -30,13 +33,19 @@ $databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));
 
-$container->add('APP_ENV', new StringArgument($appEnv));
+$container->addShared('APP_ENV', new StringArgument($appEnv));
 
-$container->add(ContainerInterface::class, $container);
+$container->addShared(ContainerInterface::class, $container);
 
-$container->add(SessionInterface::class, Session::class);
+$container->addShared(SessionInterface::class, Session::class);
 
-$container->add(RequestHandlerInterface::class, RequestHandler::class)
+$container->addShared(SessionAuthInterface::class, SessionAuthentication::class)
+    ->addArguments([
+        UserService::class,
+        SessionInterface::class,
+    ]);
+
+$container->addShared(RequestHandlerInterface::class, RequestHandler::class)
     ->addArgument($container);
 
 $container->addShared(RouterInterface::class, Router::class)

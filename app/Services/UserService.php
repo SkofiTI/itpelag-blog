@@ -4,9 +4,11 @@ namespace App\Services;
 
 use App\Entities\User;
 use Doctrine\DBAL\Connection;
+use Framework\Authentication\AuthUserInterface;
+use Framework\Authentication\AuthUserServiceInterface;
 use Framework\Http\Exceptions\NotFoundedException;
 
-class UserService
+class UserService implements AuthUserServiceInterface
 {
     public function __construct(
         private Connection $connection
@@ -56,8 +58,10 @@ class UserService
         }
 
         return User::create(
+            id: $userData['id'],
             username: $userData['username'],
             password: $userData['password'],
+            createdAt: new \DateTimeImmutable($userData['created_at']),
         );
     }
 
@@ -70,5 +74,30 @@ class UserService
         }
 
         return $user;
+    }
+
+    public function findByUsername(string $username): ?AuthUserInterface
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $result = $queryBuilder
+            ->select('*')
+            ->from('users')
+            ->where('username = :username')
+            ->setParameter('username', $username)
+            ->executeQuery();
+
+        $userData = $result->fetchAssociative();
+
+        if (! $userData) {
+            return null;
+        }
+
+        return User::create(
+            id: $userData['id'],
+            username: $userData['username'],
+            password: $userData['password'],
+            createdAt: new \DateTimeImmutable($userData['created_at']),
+        );
     }
 }
