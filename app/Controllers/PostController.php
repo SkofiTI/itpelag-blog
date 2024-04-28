@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\Post;
 use App\Services\PostService;
+use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
@@ -12,6 +13,7 @@ class PostController extends AbstractController
 {
     public function __construct(
         private PostService $postService,
+        private SessionAuthInterface $sessionAuth
     ) {
     }
 
@@ -36,9 +38,12 @@ class PostController extends AbstractController
 
     public function store(): Response
     {
+        $user = $this->sessionAuth->getUser();
+
         $post = Post::create(
             $this->request->getPostData('title'),
             $this->request->getPostData('body'),
+            $user->getId(),
         );
 
         $post = $this->postService->store($post);

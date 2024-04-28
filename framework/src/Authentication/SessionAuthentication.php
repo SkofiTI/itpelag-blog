@@ -13,6 +13,11 @@ class SessionAuthentication implements SessionAuthInterface
         private AuthUserServiceInterface $userService,
         private SessionInterface $session
     ) {
+        if ($this->check()) {
+            $user = $this->userService->find($session->get(Session::AUTH_KEY));
+
+            $this->login($user);
+        }
     }
 
     public function authenticate(string $username, string $password): bool
