@@ -7,6 +7,7 @@ use Framework\Authentication\SessionAuthInterface;
 use Framework\Console\Commands\MigrateCommand;
 use Framework\Controller\AbstractController;
 use Framework\Dbal\ConnectionFactory;
+use Framework\Http\Middleware\ExtractRouteInfo;
 use Framework\Http\Middleware\RequestHandler;
 use Framework\Http\Middleware\RequestHandlerInterface;
 use Framework\Routing\Router;
@@ -50,8 +51,9 @@ $container->addShared(RequestHandlerInterface::class, RequestHandler::class)
 
 $container->addShared(RouterInterface::class, Router::class)
     ->addArgument($container);
-$container->extend(RouterInterface::class)
-    ->addMethodCall('registerRoutes', [new ArrayArgument($routes)]);
+
+$container->add(ExtractRouteInfo::class)
+    ->addArgument(new ArrayArgument($routes));
 
 $container->inflector(AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
@@ -67,6 +69,7 @@ $container->add('twig-factory', TwigFactory::class)
     ->addArguments([
         new StringArgument($viewsPath),
         SessionInterface::class,
+        SessionAuthInterface::class,
     ]);
 
 $container->addShared('twig', function () use ($container): Environment {

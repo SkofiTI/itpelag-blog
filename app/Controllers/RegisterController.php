@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Forms\User\RegisterForm;
 use App\Services\UserService;
+use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
@@ -11,7 +12,8 @@ use Framework\Http\Response;
 class RegisterController extends AbstractController
 {
     public function __construct(
-        private UserService $userService
+        private UserService $userService,
+        private SessionAuthInterface $sessionAuth
     ) {
     }
 
@@ -54,6 +56,8 @@ class RegisterController extends AbstractController
             ->getSession()
             ->setFlash('success', "Пользователь {$user->getUsername()} успешно зарегистрирован!");
 
-        return new RedirectResponse('/');
+        $this->sessionAuth->login($user);
+
+        return new RedirectResponse('/dashboard');
     }
 }

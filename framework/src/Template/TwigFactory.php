@@ -2,6 +2,7 @@
 
 namespace Framework\Template;
 
+use Framework\Authentication\SessionAuthInterface;
 use Framework\Session\SessionInterface;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
@@ -11,8 +12,9 @@ use Twig\TwigFunction;
 class TwigFactory
 {
     public function __construct(
-        private string $viewsPath,
-        private SessionInterface $session
+        private readonly string $viewsPath,
+        private readonly SessionInterface $session,
+        private readonly SessionAuthInterface $sessionAuth
     ) {
     }
 
@@ -27,6 +29,7 @@ class TwigFactory
 
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
+        $twig->addFunction(new TwigFunction('isAuth', [$this->sessionAuth, 'check']));
 
         return $twig;
     }

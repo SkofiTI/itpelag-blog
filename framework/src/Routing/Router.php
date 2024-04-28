@@ -2,20 +2,12 @@
 
 namespace Framework\Routing;
 
-use FastRoute\Dispatcher;
-use FastRoute\RouteCollector;
 use Framework\Controller\AbstractController;
-use Framework\Http\Exceptions\MethodNotAllowedException;
-use Framework\Http\Exceptions\RouteNotFoundException;
 use Framework\Http\Request;
 use Psr\Container\ContainerInterface;
 
-use function FastRoute\simpleDispatcher;
-
 class Router implements RouterInterface
 {
-    private array $routes;
-
     public function __construct(
         private ContainerInterface $container,
     ) {
@@ -23,7 +15,8 @@ class Router implements RouterInterface
 
     public function dispatch(Request $request): array
     {
-        [$handler, $vars] = $this->extractRouteInfo($request);
+        $handler = $request->getRouteHandler();
+        $vars = $request->getRouteArgs();
 
         if (is_array($handler)) {
             [$controllerId, $method] = $handler;
@@ -37,38 +30,5 @@ class Router implements RouterInterface
         }
 
         return [$handler, $vars];
-    }
-
-    public function registerRoutes(array $routes): void
-    {
-        $this->routes = $routes;
-    }
-
-    private function extractRouteInfo(Request $request): array
-    {
-        $dispatcher = simpleDispatcher(function (RouteCollector $collector) {
-            foreach ($this->routes as $route) {
-                $collector->addRoute(...$route);
-            }
-        });
-
-        $routeInfo = $dispatcher->dispatch(
-            $request->getMethod(),
-            $request->getPath(),
-        );
-
-        switch ($routeInfo[0]) {
-            case Dispatcher::FOUND:
-                return [$routeInfo[1], $routeInfo[2]];
-            case Dispatcher::METHOD_NOT_ALLOWED:
-                $allowedMethods = implode(', ', $routeInfo[1]);
-                $e = new MethodNotAllowedException("Supported HTTP methods: $allowedMethods");
-                $e->setStatusCode(405);
-                throw $e;
-            default:
-                $e = new RouteNotFoundException('Route not found');
-                $e->setStatusCode(404);
-                throw $e;
-        }
     }
 }

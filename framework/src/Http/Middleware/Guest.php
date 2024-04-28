@@ -7,7 +7,7 @@ use Framework\Http\RedirectResponse;
 use Framework\Http\Request;
 use Framework\Http\Response;
 
-class Authenticate implements MiddlewareInterface
+class Guest implements MiddlewareInterface
 {
     public function __construct(
         private SessionAuthInterface $sessionAuth,
@@ -16,8 +16,8 @@ class Authenticate implements MiddlewareInterface
 
     public function process(Request $request, RequestHandlerInterface $handler): Response
     {
-        if (! $this->sessionAuth->check()) {
-            return new RedirectResponse('/login');
+        if ($this->sessionAuth->check()) {
+            return new RedirectResponse('/dashboard');
         }
 
         return $handler->handle($request);

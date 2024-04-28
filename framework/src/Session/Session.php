@@ -6,6 +6,8 @@ class Session implements SessionInterface
 {
     private const FLASH_KEY = 'flash';
 
+    public const AUTH_KEY = 'user_id';
+
     public function start(): void
     {
         session_start();

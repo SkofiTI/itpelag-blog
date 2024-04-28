@@ -10,7 +10,7 @@ class RequestHandler implements RequestHandlerInterface
 {
     private array $middlewares = [
         StartSession::class,
-        Authenticate::class,
+        ExtractRouteInfo::class,
         RouterDispatch::class,
     ];
 
@@ -31,5 +31,10 @@ class RequestHandler implements RequestHandlerInterface
         $response = $middleware->process($request, $this);
 
         return $response;
+    }
+
+    public function injectMiddlewares(array $middlewares): void
+    {
+        array_splice($this->middlewares, 0, 0, $middlewares);
     }
 }

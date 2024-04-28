@@ -7,12 +7,21 @@
 
             <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 mb-md-0">
                 <li><a href="/" class="nav-link px-2 text-white">Главная</a></li>
-                <li><a href="/posts/create" class="nav-link px-2 text-white">Создать пост</a></li>
+                {% if isAuth() %}
+                    <li><a href="/posts/create" class="nav-link px-2 text-white">Создать пост</a></li>
+                    <li><a href="/dashboard" class="nav-link px-2 text-white">Мои посты</a></li>
+                {% endif %}
             </ul>
 
             <div class="text-end">
-                <a href="/login" class="btn btn-outline-light me-2">Логин</a>
-                <a href="/register" class="btn btn-warning">Регистрация</a>
+                {% if isAuth() %}
+                    <form action="/logout" method="post">
+                        <button href="/logout" class="btn btn-danger">Выход</button>
+                    </form>
+                {% else %}
+                    <a href="/login" class="btn btn-outline-light me-2">Логин</a>
+                    <a href="/register" class="btn btn-warning">Регистрация</a>
+                {% endif %}
             </div>
         </div>
     </div>

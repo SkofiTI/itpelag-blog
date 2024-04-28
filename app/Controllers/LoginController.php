@@ -40,4 +40,11 @@ class LoginController extends AbstractController
 
         return new RedirectResponse('/dashboard');
     }
+
+    public function logout(): RedirectResponse
+    {
+        $this->sessionAuth->logout();
+
+        return new RedirectResponse('/login');
+    }
 }
