@@ -13,7 +13,7 @@ class PostService
     ) {
     }
 
-    public function save(Post $post): Post
+    public function store(Post $post): Post
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 

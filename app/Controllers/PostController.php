@@ -7,7 +7,6 @@ use App\Services\PostService;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
-use Framework\Session\SessionInterface;
 
 class PostController extends AbstractController
 {
@@ -42,22 +41,12 @@ class PostController extends AbstractController
             $this->request->getPostData('body'),
         );
 
-        $post = $this->postService->save($post);
+        $post = $this->postService->store($post);
 
         $this->request
             ->getSession()
             ->setFlash('success', 'Пост успешно создан!');
 
         return new RedirectResponse("/posts/{$post->getId()}");
-    }
-
-    public function login(): Response
-    {
-        return $this->render('login.html.twig');
-    }
-
-    public function registration(): Response
-    {
-        return $this->render('registration.html.twig');
     }
 }

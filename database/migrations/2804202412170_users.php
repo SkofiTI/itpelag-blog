@@ -7,18 +7,18 @@ return new class
 {
     public function up(Schema $schema): void
     {
-        $table = $schema->createTable('posts');
+        $table = $schema->createTable('users');
         $table->addColumn('id', Types::INTEGER, [
             'unsigned' => true,
             'autoincrement' => true,
         ]);
-        $table->addColumn('title', Types::STRING);
-        $table->addColumn('body', Types::TEXT);
+        $table->addColumn('username', Types::STRING);
+        $table->addColumn('password', Types::STRING);
         $table->addColumn('created_at', Types::DATETIME_IMMUTABLE, [
             'default' => 'CURRENT_TIMESTAMP',
         ]);
         $table->setPrimaryKey(['id']);
-        $table->addUniqueIndex(['title']);
+        $table->addUniqueIndex(['username']);
     }
 
     public function down(Schema $schema): void

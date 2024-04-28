@@ -57,7 +57,7 @@ $container->addShared(Connection::class, function () use ($container): Connectio
 $container->add('twig-factory', TwigFactory::class)
     ->addArguments([
         new StringArgument($viewsPath),
-        SessionInterface::class
+        SessionInterface::class,
     ]);
 
 $container->addShared('twig', function () use ($container): Environment {
@@ -67,7 +67,7 @@ $container->addShared('twig', function () use ($container): Environment {
 $container->add('console:migrate', MigrateCommand::class)
     ->addArguments([
         Connection::class,
-        new StringArgument(BASE_PATH.'/database/migrations')
+        new StringArgument(BASE_PATH.'/database/migrations'),
     ]);
 
 return $container;

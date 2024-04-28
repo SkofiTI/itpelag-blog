@@ -32,9 +32,9 @@ class Request
         return $this->server['REQUEST_METHOD'];
     }
 
-    public function getPostData(string $key): string
+    public function getPostData(string $key, mixed $default = null)
     {
-        return $this->postData[$key];
+        return $this->postData[$key] ?? $default;
     }
 
     public function getSession(): SessionInterface
