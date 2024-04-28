@@ -1,6 +1,13 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block main %}
+    {% if session().hasFlash('error') %}
+        <div class="alert alert-danger text-center">
+            {% for message in session().getFlash('error') %}
+                <p class="m-0">{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endif %}
     <div class="bg-body-tertiary p-5 rounded">
         <form action="/login" method="post">
             <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
