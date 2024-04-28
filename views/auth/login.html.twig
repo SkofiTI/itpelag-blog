@@ -2,15 +2,15 @@
 
 {% block main %}
     <div class="bg-body-tertiary p-5 rounded">
-        <form>
+        <form action="/login" method="post">
             <h1 class="h3 mb-3 fw-normal">Авторизация</h1>
 
             <div class="form-floating mb-3">
-                <input type="username" class="form-control" id="username" placeholder="Username">
+                <input type="username" class="form-control" id="username" name="username" placeholder="Username" required>
                 <label for="username">Username</label>
             </div>
             <div class="form-floating mb-3">
-                <input type="password" class="form-control" id="password" placeholder="Password">
+                <input type="password" class="form-control" id="password" name="password" placeholder="Password" required>
                 <label for="password">Password</label>
             </div>
 
