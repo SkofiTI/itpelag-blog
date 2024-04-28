@@ -4,6 +4,7 @@ use App\Controllers\DashboardController;
 use App\Controllers\LoginController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
+use Framework\Http\Middleware\Authenticate;
 use Framework\Routing\Route;
 
 return [
@@ -17,5 +18,5 @@ return [
     Route::get('/register', [RegisterController::class, 'index']),
     Route::post('/register', [RegisterController::class, 'register']),
 
-    Route::get('/dashboard', [DashboardController::class, 'index']),
+    Route::get('/dashboard', [DashboardController::class, 'index'], [Authenticate::class]),
 ];

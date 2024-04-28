@@ -28,7 +28,7 @@ class Kernel
         return $response;
     }
 
-    public function terminate(Request $request, Response $response): void
+    public function terminate(Request $request): void
     {
         $request->getSession()?->clearFlash();
     }
