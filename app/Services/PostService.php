@@ -133,6 +133,28 @@ class PostService
         return $result->fetchAllAssociative();
     }
 
+    public function getAllPaginate(int $page, int $limit): array
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $result = $queryBuilder
+            ->select([
+                'p.id',
+                'p.title',
+                'p.body',
+                'p.created_at',
+                'u.username',
+            ])
+            ->from('posts', 'p')
+            ->join('p', 'users', 'u', 'u.id = p.user_id')
+            ->orderBy('p.created_at', 'ASC')
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit)
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
+
     public function getAllByUser(int $userId): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();

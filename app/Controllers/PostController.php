@@ -22,8 +22,19 @@ class PostController extends AbstractController
 
     public function index()
     {
+        $limit = 10;
+        $totalPages = ceil(count($this->postService->getAll()) / $limit);
+
+        $page = $this->request->getParameters('page', 1);
+
+        if ($page > $totalPages) {
+            $page = $totalPages;
+        }
+
         return $this->render('index.html.twig', [
-            'posts' => $this->postService->getAll(),
+            'posts' => $this->postService->getAllPaginate($page, 10),
+            'totalPages' => $totalPages,
+            'currentPage' => $page,
         ]);
     }
 

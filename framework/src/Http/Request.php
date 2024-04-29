@@ -13,7 +13,7 @@ class Request
     private array $routeArgs;
 
     public function __construct(
-        private readonly array $getParams,
+        private readonly array $getData,
         private readonly array $postData,
         private readonly array $cookies,
         private readonly array $files,
@@ -39,6 +39,11 @@ class Request
     public function getPostData(string $key, mixed $default = null)
     {
         return $this->postData[$key] ?? $default;
+    }
+
+    public function getParameters(string $key, mixed $default = null)
+    {
+        return $this->getData[$key] ?? $default;
     }
 
     public function getSession(): SessionInterface
