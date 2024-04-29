@@ -8,6 +8,16 @@
             {% endfor %}
         </div>
     {% endif %}
+    {% if isAuth() %}
+        {% if isCreator(post.username) %}
+            <div class="d-flex justify-content-end">
+                    <a href="/posts/{{ post.id }}/edit" class="btn btn-primary me-2">Изменить пост</a>
+                    <form action="/posts/{{ post.id }}/delete" method="post">
+                        <button class="btn btn-danger">Удалить пост</button>
+                    </form>
+            </div>
+        {% endif %}
+    {% endif %}
     <div class="bg-body-tertiary p-5 rounded">
         <h1>{{ post.title }}</h1>
         <p class="lead">{{ post.body }}</p>

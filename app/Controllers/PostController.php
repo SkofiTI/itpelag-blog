@@ -54,4 +54,68 @@ class PostController extends AbstractController
 
         return new RedirectResponse("/posts/{$post->getId()}");
     }
+
+    public function edit(int $id): Response
+    {
+        $post = $this->postService->findOrFail($id);
+        $userId = $this->sessionAuth->getUser()->getId();
+
+        if ($post['user_id'] != $userId) {
+            return new RedirectResponse('/');
+        }
+
+        return $this->render('edit.html.twig', [
+            'post' => $post,
+        ]);
+    }
+
+    public function update(int $id): Response
+    {
+        $post = $this->postService->findOrFail($id);
+        $userId = $this->sessionAuth->getUser()->getId();
+
+        if ($post['user_id'] != $userId) {
+            return new RedirectResponse('/');
+        }
+
+        $post = Post::create(
+            $this->request->getPostData('title'),
+            $this->request->getPostData('body'),
+            $userId,
+            $id,
+        );
+
+        $post = $this->postService->update($post);
+
+        $this->request
+            ->getSession()
+            ->setFlash('success', 'Пост успешно изменён!');
+
+        return new RedirectResponse("/posts/{$post->getId()}");
+    }
+
+    public function delete(int $id)
+    {
+        $post = $this->postService->findOrFail($id);
+        $userId = $this->sessionAuth->getUser()->getId();
+
+        if ($post['user_id'] != $userId) {
+            return new RedirectResponse('/');
+        }
+
+        $post = Post::create(
+            $post['title'],
+            $post['body'],
+            $userId,
+            $id,
+        );
+
+        $this->postService->delete($post);
+
+        $this->request
+            ->getSession()
+            ->setFlash('success', 'Пост успешно удалён!');
+
+        return new RedirectResponse('/');
+    }
 }

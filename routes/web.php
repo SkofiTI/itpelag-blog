@@ -13,6 +13,9 @@ return [
     Route::get('/posts/{id:\d+}', [PostController::class, 'show']),
     Route::get('/posts/create', [PostController::class, 'create'], [Authenticate::class]),
     Route::post('/posts', [PostController::class, 'store'], [Authenticate::class]),
+    Route::get('/posts/{id:\d}/edit', [PostController::class, 'edit'], [Authenticate::class]),
+    Route::post('/posts/{id:\d}', [PostController::class, 'update'], [Authenticate::class]),
+    Route::post('/posts/{id:\d}/delete', [PostController::class, 'delete'], [Authenticate::class]),
 
     Route::get('/login', [LoginController::class, 'index'], [Guest::class]),
     Route::post('/login', [LoginController::class, 'login'], [Guest::class]),
