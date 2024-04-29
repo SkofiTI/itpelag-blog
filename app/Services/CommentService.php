@@ -41,7 +41,7 @@ class CommentService
         return $comment;
     }
 
-    public function getAll(): array
+    public function getAll(int $postId): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -54,6 +54,9 @@ class CommentService
             ])
             ->from('comments', 'c')
             ->join('c', 'users', 'u', 'u.id = c.user_id')
+            ->join('c', 'posts', 'p', 'p.id = c.post_id')
+            ->where('c.post_id = :post_id')
+            ->setParameter('post_id', $postId)
             ->orderBy('c.created_at', 'ASC')
             ->executeQuery();
 

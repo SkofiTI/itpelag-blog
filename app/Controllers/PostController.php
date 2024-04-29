@@ -31,7 +31,7 @@ class PostController extends AbstractController
     {
         return $this->render('show.html.twig', [
             'post' => $this->postService->findOrFail($id),
-            'comments' => $this->commentService->getAll(),
+            'comments' => $this->commentService->getAll($id),
         ]);
     }
 
