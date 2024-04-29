@@ -3,12 +3,11 @@
 namespace App\Forms\User;
 
 use App\Entities\User;
+use App\Interfaces\FormInterface;
 use App\Services\UserService;
 
-class RegisterForm
+class RegisterForm implements FormInterface
 {
-    private string $name;
-
     private string $username;
 
     private string $password;
