@@ -52,7 +52,11 @@ class PostController extends AbstractController
         } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
-                ->setFlash('error', 'Название поста должно быть уникальным!');
+                ->setFlashArray([
+                    'error' => 'Название поста должно быть уникальным!',
+                    'title' => $post->getTitle(),
+                    'body' => $post->getBody(),
+                ]);
 
             return new RedirectResponse('/posts/create');
         }
