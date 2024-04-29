@@ -40,6 +40,18 @@ class Session implements SessionInterface
         $flash[$type][] = $message;
 
         $this->set(self::FLASH_KEY, $flash);
+
+    }
+
+    public function setFlashArray(array $messages): void
+    {
+        $flash = $this->get(self::FLASH_KEY, []);
+
+        foreach ($messages as $type => $message) {
+            $flash[$type][] = $message;
+        }
+
+        $this->set(self::FLASH_KEY, $flash);
     }
 
     public function getFlash(string $type): array

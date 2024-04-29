@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Entities\Post;
 use App\Services\PostService;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
@@ -46,7 +47,15 @@ class PostController extends AbstractController
             $user->getId(),
         );
 
-        $post = $this->postService->store($post);
+        try {
+            $post = $this->postService->store($post);
+        } catch (UniqueConstraintViolationException $e) {
+            $this->request
+                ->getSession()
+                ->setFlash('error', 'Название поста должно быть уникальным!');
+
+            return new RedirectResponse('/posts/create');
+        }
 
         $this->request
             ->getSession()
@@ -85,7 +94,15 @@ class PostController extends AbstractController
             $id,
         );
 
-        $post = $this->postService->update($post);
+        try {
+            $post = $this->postService->update($post);
+        } catch (UniqueConstraintViolationException $e) {
+            $this->request
+                ->getSession()
+                ->setFlash('error', 'Название поста должно быть уникальным!');
+
+            return new RedirectResponse("/posts/{$post->getId()}/edit");
+        }
 
         $this->request
             ->getSession()
