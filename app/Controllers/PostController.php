@@ -2,7 +2,7 @@
 
 namespace App\Controllers;
 
-use App\Entities\Post;
+use App\Forms\Post\PostForm;
 use App\Services\CommentService;
 use App\Services\PostService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
@@ -44,14 +44,26 @@ class PostController extends AbstractController
     {
         $user = $this->sessionAuth->getUser();
 
-        $post = Post::create(
-            $this->request->getPostData('title'),
-            $this->request->getPostData('body'),
-            $user->getId(),
+        $form = new PostForm($this->postService);
+
+        $form->setFields(
+            title: $this->request->getPostData('title'),
+            body: $this->request->getPostData('body'),
+            userId: $user->getId(),
         );
 
+        if ($form->hasValidationErrors()) {
+            foreach ($form->getValidationErrors() as $error) {
+                $this->request
+                    ->getSession()
+                    ->setFlash('error', $error);
+            }
+
+            return new RedirectResponse('/posts/create');
+        }
+
         try {
-            $post = $this->postService->store($post);
+            $post = $form->save();
         } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
@@ -94,15 +106,27 @@ class PostController extends AbstractController
             return new RedirectResponse('/');
         }
 
-        $post = Post::create(
-            $this->request->getPostData('title'),
-            $this->request->getPostData('body'),
-            $userId,
-            $id,
+        $form = new PostForm($this->postService);
+
+        $form->setFields(
+            title: $this->request->getPostData('title'),
+            body: $this->request->getPostData('body'),
+            userId: $userId,
+            id: $id
         );
 
+        if ($form->hasValidationErrors()) {
+            foreach ($form->getValidationErrors() as $error) {
+                $this->request
+                    ->getSession()
+                    ->setFlash('error', $error);
+            }
+
+            return new RedirectResponse('/posts/create');
+        }
+
         try {
-            $post = $this->postService->update($post);
+            $post = $form->update();
         } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
@@ -118,7 +142,7 @@ class PostController extends AbstractController
         return new RedirectResponse("/posts/{$post->getId()}");
     }
 
-    public function delete(int $id)
+    public function delete(int $id): Response
     {
         $post = $this->postService->findOrFail($id);
         $userId = $this->sessionAuth->getUser()->getId();
@@ -127,14 +151,16 @@ class PostController extends AbstractController
             return new RedirectResponse('/');
         }
 
-        $post = Post::create(
+        $form = new PostForm($this->postService);
+
+        $form->setFields(
             $post['title'],
             $post['body'],
-            $userId,
-            $id,
+            userId: $userId,
+            id: $id,
         );
 
-        $this->postService->delete($post);
+        $form->delete();
 
         $this->request
             ->getSession()

@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Forms\User\RegisterForm;
 use App\Services\UserService;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
@@ -44,10 +45,10 @@ class RegisterController extends AbstractController
 
         try {
             $user = $form->save();
-        } catch (\Exception $e) {
+        } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
-                ->setFlash('error', 'Пользователь с таким именем уже существует'); // TODO: Создать кастомный Exception
+                ->setFlash('error', 'Пользователь с таким именем уже существует');
 
             return new RedirectResponse('/register');
         }
