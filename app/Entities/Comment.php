@@ -23,9 +23,24 @@ class Comment
         return new static($id, $userId, $postId, $content, $createdAt ?? new \DateTimeImmutable());
     }
 
+    public function setId(int $id): void
+    {
+        $this->id = $id;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserId(): int
+    {
+        return $this->userId;
+    }
+
+    public function getPostId(): int
+    {
+        return $this->postId;
     }
 
     public function getContent(): string

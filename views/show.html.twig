@@ -42,8 +42,9 @@
             {% for comment in comments %}
                 <div class="card mb-3">
                     <div class="card-body">
-                        <p class="card-text">{{ comment.text }}</p>
-                        <p class="card-text">Автор: {{ comment.author }}</p>
+                        <p class="card-text">{{ comment.content }}</p>
+                        <p class="card-text">Автор: {{ comment.username }}</p>
+                        <p class="card-text">{{ comment.created_at }}</p>
                     </div>
                 </div>
             {% endfor %}
