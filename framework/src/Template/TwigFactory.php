@@ -30,6 +30,7 @@ class TwigFactory
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
         $twig->addFunction(new TwigFunction('isAuth', [$this->sessionAuth, 'check']));
+        $twig->addFunction(new TwigFunction('isCreator', [$this, 'isCreator']));
 
         return $twig;
     }
@@ -37,5 +38,10 @@ class TwigFactory
     public function getSession(): SessionInterface
     {
         return $this->session;
+    }
+
+    public function isCreator(string $username): bool
+    {
+        return $this->sessionAuth->getUser()->getUsername() === $username;
     }
 }

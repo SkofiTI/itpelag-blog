@@ -33,4 +33,10 @@
             <p class="m-0">{{ message }}</p>
         {% endfor %}
     </div>
+{% elseif session().hasFlash('error') %}
+    <div class="alert alert-danger text-center">
+        {% for message in session().getFlash('error') %}
+            <p class="m-0">{{ message }}</p>
+        {% endfor %}
+    </div>
 {% endif %}

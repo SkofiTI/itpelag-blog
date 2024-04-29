@@ -1,0 +1,17 @@
+{% extends 'layouts/base.html.twig' %}
+
+{% block main %}
+    <form action="/posts/{{ post.id }}" method="post">
+        <div class="mb-3">
+            <label for="title" class="form-label h3">Заголовок</label>
+            <input type="text" value="{{ post.title }}" name="title" class="form-control border-dark" id="title" aria-describedby="titleHelp" required>
+        </div>
+        <div class="mb-3">
+            <label for="body" class="form-label h3">Контент</label>
+            <textarea name="body" id="body" cols="30" rows="10" class="form-control border-dark" style="resize: none;" required>{{ post.body }}</textarea>
+        </div>
+        <div class="text-end">
+            <button type="submit" class="btn btn-primary">Отправить</button>
+        </div>
+    </form>
+{% endblock %}

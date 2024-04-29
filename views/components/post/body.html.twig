@@ -1,0 +1,7 @@
+<textarea name="body" id="body" cols="30" rows="10" class="form-control border-dark" style="resize: none;" required>
+{% if session().hasFlash('body') %}
+{% for message in session().getFlash('body') %}
+{{ message }}
+{% endfor %}
+{% endif %}
+</textarea>

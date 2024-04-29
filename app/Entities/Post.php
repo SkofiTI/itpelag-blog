@@ -6,6 +6,7 @@ class Post
 {
     public function __construct(
         private ?int $id,
+        private int $userId,
         private string $title,
         private string $body,
         private ?\DateTimeImmutable $createdAt,
@@ -15,10 +16,11 @@ class Post
     public static function create(
         string $title,
         string $body,
+        int $userId,
         ?int $id = null,
         ?\DateTimeImmutable $createdAt = null
     ): static {
-        return new static($id, $title, $body, $createdAt ?? new \DateTimeImmutable());
+        return new static($id, $userId, $title, $body, $createdAt ?? new \DateTimeImmutable());
     }
 
     public function setId(int $id): void
@@ -44,6 +46,11 @@ class Post
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getUserId(): ?int
+    {
+        return $this->userId;
     }
 
     public function getTitle(): string

@@ -48,7 +48,7 @@ class RegisterForm
         }
 
         if (empty($this->password) || strlen($this->password) < 8) {
-            $errors[] = 'Минимальная длинна пароля 8 символов';
+            $errors[] = 'Минимальная длина пароля 8 символов';
         }
 
         if ($this->password !== $this->passwordConfirmation) {

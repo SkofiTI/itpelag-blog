@@ -1,0 +1,8 @@
+<input type="text" name="title" class="form-control border-dark" id="title" aria-describedby="titleHelp" required
+    value=
+    {% if session().hasFlash('title') %}
+        {% for message in session().getFlash('title') %}
+            "{{ message }}"
+        {% endfor %}
+    {% endif %}
+>

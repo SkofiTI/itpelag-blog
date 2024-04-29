@@ -16,6 +16,8 @@ interface SessionInterface
 
     public function setFlash(string $type, string $message): void;
 
+    public function setFlashArray(array $messages): void;
+
     public function getFlash(string $type): array;
 
     public function hasFlash(string $type): bool;
