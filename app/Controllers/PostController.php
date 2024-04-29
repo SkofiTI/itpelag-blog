@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Entities\Post;
+use App\Services\CommentService;
 use App\Services\PostService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Framework\Authentication\SessionAuthInterface;
@@ -14,6 +15,7 @@ class PostController extends AbstractController
 {
     public function __construct(
         private PostService $postService,
+        private CommentService $commentService,
         private SessionAuthInterface $sessionAuth
     ) {
     }
@@ -29,6 +31,7 @@ class PostController extends AbstractController
     {
         return $this->render('show.html.twig', [
             'post' => $this->postService->findOrFail($id),
+            'comments' => $this->commentService->getAll(),
         ]);
     }
 

@@ -1,5 +1,6 @@
 <?php
 
+use App\Controllers\CommentController;
 use App\Controllers\DashboardController;
 use App\Controllers\LoginController;
 use App\Controllers\PostController;
@@ -16,6 +17,7 @@ return [
     Route::get('/posts/{id:\d}/edit', [PostController::class, 'edit'], [Authenticate::class]),
     Route::post('/posts/{id:\d}', [PostController::class, 'update'], [Authenticate::class]),
     Route::post('/posts/{id:\d}/delete', [PostController::class, 'delete'], [Authenticate::class]),
+    Route::post('/comments/create', [CommentController::class, 'store'], [Authenticate::class]),
 
     Route::get('/login', [LoginController::class, 'index'], [Guest::class]),
     Route::post('/login', [LoginController::class, 'login'], [Guest::class]),

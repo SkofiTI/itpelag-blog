@@ -127,6 +127,7 @@ class PostService
             ])
             ->from('posts', 'p')
             ->join('p', 'users', 'u', 'u.id = p.user_id')
+            ->orderBy('p.created_at', 'ASC')
             ->executeQuery();
 
         return $result->fetchAllAssociative();
@@ -146,6 +147,7 @@ class PostService
             ->from('posts', 'p')
             ->where('user_id = :user_id')
             ->setParameter('user_id', $userId)
+            ->orderBy('p.created_at', 'ASC')
             ->executeQuery();
 
         return $result->fetchAllAssociative();

@@ -22,4 +22,34 @@
         <h1>{{ post.title }}</h1>
         <p class="lead">{{ post.body }}</p>
     </div>
+    {% if isAuth() %}
+        <div class="mt-5 pt-2 border-top border-secondary">
+            <h2>Оставить комментарий</h2>
+            <form action="/comments/create" method="post">
+                <input type="hidden" name="post_id" value="{{ post.id }}">
+                <div class="mb-3">
+                    <textarea name="comment" id="comment" cols="30" rows="5" class="form-control border-3" style="resize: none;" required></textarea>
+                </div>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">Отправить</button>
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <div class="mt-5">
+        <h2>Список комментариев:</h2>
+        {% if comments %}
+            {% for comment in comments %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p class="card-text">{{ comment.content }}</p>
+                        <p class="card-text">Автор: {{ comment.username }}</p>
+                        <p class="card-text">{{ comment.created_at }}</p>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Список комментариев пуст.</p>
+        {% endif %}
+    </div>
 {% endblock %}

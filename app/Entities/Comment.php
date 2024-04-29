@@ -2,45 +2,30 @@
 
 namespace App\Entities;
 
-class Post
+class Comment
 {
     public function __construct(
         private ?int $id,
         private int $userId,
-        private string $title,
-        private string $body,
+        private int $postId,
+        private string $content,
         private ?\DateTimeImmutable $createdAt,
     ) {
     }
 
     public static function create(
-        string $title,
-        string $body,
+        string $content,
         int $userId,
+        int $postId,
         ?int $id = null,
         ?\DateTimeImmutable $createdAt = null
     ): static {
-        return new static($id, $userId, $title, $body, $createdAt ?? new \DateTimeImmutable());
+        return new static($id, $userId, $postId, $content, $createdAt ?? new \DateTimeImmutable());
     }
 
     public function setId(int $id): void
     {
         $this->id = $id;
-    }
-
-    public function setTitle(string $title): void
-    {
-        $this->title = $title;
-    }
-
-    public function setBody(string $body): void
-    {
-        $this->body = $body;
-    }
-
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void
-    {
-        $this->createdAt = $createdAt;
     }
 
     public function getId(): ?int
@@ -53,14 +38,14 @@ class Post
         return $this->userId;
     }
 
-    public function getTitle(): string
+    public function getPostId(): int
     {
-        return $this->title;
+        return $this->postId;
     }
 
-    public function getBody(): string
+    public function getContent(): string
     {
-        return $this->body;
+        return $this->content;
     }
 
     public function getCreatedAt(): ?\DateTimeImmutable
