@@ -17,6 +17,7 @@
         "league/container": "^4.2",
         "symfony/dotenv": "^7.0.4",
         "twig/twig": "^3.9",
+        "twig/string-extra": "^3.9",
         "doctrine/dbal": "^3.8.4"
     },
     "require-dev": {

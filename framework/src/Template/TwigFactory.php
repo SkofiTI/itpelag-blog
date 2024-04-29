@@ -6,6 +6,7 @@ use Framework\Authentication\SessionAuthInterface;
 use Framework\Session\SessionInterface;
 use Twig\Environment;
 use Twig\Extension\DebugExtension;
+use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
@@ -27,6 +28,7 @@ class TwigFactory
             'cache' => false,
         ]);
 
+        $twig->addExtension(new StringExtension());
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
         $twig->addFunction(new TwigFunction('isAuth', [$this->sessionAuth, 'check']));
