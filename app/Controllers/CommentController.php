@@ -3,6 +3,7 @@
 namespace App\Controllers;
 
 use App\Entities\Comment;
+use App\Exceptions\LimitQueryException;
 use App\Services\CommentService;
 use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
@@ -27,7 +28,15 @@ class CommentController extends AbstractController
             $this->request->getPostData('post_id'),
         );
 
-        $comment = $this->commentService->store($comment);
+        try {
+            $comment = $this->commentService->store($comment);
+        } catch (LimitQueryException $e) {
+            $this->request
+                ->getSession()
+                ->setFlash('error', 'Нельзя создавать комментарии чаще чем раз в минуту и более чем 3 подряд!');
+
+            return new RedirectResponse("/posts/{$comment->getPostId()}");
+        }
 
         $this->request
             ->getSession()

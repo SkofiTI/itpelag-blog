@@ -47,7 +47,7 @@ class PostController extends AbstractController
 
         return $this->render('show.html.twig', [
             'post' => $this->postService->findOrFail($id),
-            'comments' => $this->commentService->getAll($id),
+            'comments' => $this->commentService->getAll($id, 'ASC'),
             'likesCount' => $this->likeService->getCountByPost($id),
             'userHasLike' => $userHasLike,
         ]);
