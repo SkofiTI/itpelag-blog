@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Forms\Post\PostForm;
 use App\Services\CommentService;
+use App\Services\LikeService;
 use App\Services\PostService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Framework\Authentication\SessionAuthInterface;
@@ -16,6 +17,7 @@ class PostController extends AbstractController
     public function __construct(
         private PostService $postService,
         private CommentService $commentService,
+        private LikeService $likeService,
         private SessionAuthInterface $sessionAuth
     ) {
     }
@@ -40,9 +42,14 @@ class PostController extends AbstractController
 
     public function show(int $id): Response
     {
+        $userId = $this->sessionAuth->check() ? $this->sessionAuth->getUser()->getId() : null;
+        $userHasLike = $userId ? $this->likeService->hasLike($id, $userId) : false;
+
         return $this->render('show.html.twig', [
             'post' => $this->postService->findOrFail($id),
             'comments' => $this->commentService->getAll($id),
+            'likesCount' => $this->likeService->getCountByPost($id),
+            'userHasLike' => $userHasLike,
         ]);
     }
 

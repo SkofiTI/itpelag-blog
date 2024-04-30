@@ -8,16 +8,34 @@
             {% endfor %}
         </div>
     {% endif %}
-    {% if isAuth() %}
-        {% if isCreator(post.username) %}
-            <div class="d-flex justify-content-end">
-                    <a href="/posts/{{ post.id }}/edit" class="btn btn-primary me-2">Изменить пост</a>
-                    <form action="/posts/{{ post.id }}/delete" method="post">
-                        <button class="btn btn-danger">Удалить пост</button>
-                    </form>
-            </div>
+    <div class="d-flex justify-content-between">
+        <div class="d-flex align-items-center">
+            {% if userHasLike %}
+                <form action="/likes/delete" method="post">
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button type="submit" class="btn btn-success">Лайк</button>
+                </form>
+            {% else %}
+                <form action="/likes/create" method="post">
+                    <input type="hidden" name="post_id" value="{{ post.id }}">
+                    <button type="submit" class="btn btn-danger">Лайк</button>
+                </form>
+            {% endif %}
+            <span class="badge bg-secondary rounded-pill fs-6 ms-2">{{ likesCount }}</span> 
+        </div>
+        {% if isAuth() %}
+            {% if isCreator(post.username) %}
+                <div class="d-flex">
+                    <div class="d-flex align-items-center">
+                        <a href="/posts/{{ post.id }}/edit" class="btn btn-primary me-2">Изменить пост</a>
+                        <form action="/posts/{{ post.id }}/delete" method="post">
+                            <button class="btn btn-danger">Удалить пост</button>
+                        </form>
+                    </div>
+                </div>
+            {% endif %}
         {% endif %}
-    {% endif %}
+    </div>
     <div class="bg-body-tertiary p-5 rounded">
         <h1>{{ post.title }}</h1>
         <p class="lead">{{ post.body }}</p>
