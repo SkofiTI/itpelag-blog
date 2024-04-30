@@ -94,15 +94,15 @@ class CommentService
                 'c.id',
                 'c.content',
                 'c.created_at',
+                'c.user_id',
+
             ])
             ->from('comments', 'c')
-            ->join('c', 'users', 'u', 'u.id = c.user_id')
-            ->where('user_id = :user_id')
-            ->join('c', 'posts', 'p', 'p.id = c.post_id')
-            ->where('c.post_id = :post_id')
+            ->where('c.user_id = :user_id')
+            ->andWhere('c.post_id = :post_id')
             ->setParameters([
-                'post_id' => $postId,
                 'user_id' => $userId,
+                'post_id' => $postId,
             ])
             ->setMaxResults(1)
             ->orderBy('created_at', 'DESC')
