@@ -77,7 +77,7 @@ class PostForm implements FormInterface
             $errors[] = 'Название поста является обязательным полем';
         }
 
-        $titleLength = strlen($this->title);
+        $titleLength = mb_strlen($this->title);
         if ($titleLength < 3 || $titleLength > 255) {
             $errors[] = 'Название поста не может быть короче 3-х и длиннее 255 символов';
         }
