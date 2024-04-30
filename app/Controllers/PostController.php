@@ -29,12 +29,12 @@ class PostController extends AbstractController
 
         $page = $this->request->getParameters('page', 1);
 
-        if ($page > $totalPages) {
+        if ($page > $totalPages && $totalPages > 0) {
             $page = $totalPages;
         }
 
         return $this->render('index.html.twig', [
-            'posts' => $this->postService->getAllPaginate($page, 10),
+            'posts' => $this->postService->getAllPaginate($page, $limit),
             'totalPages' => $totalPages,
             'currentPage' => $page,
         ]);

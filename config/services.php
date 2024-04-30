@@ -29,7 +29,7 @@ $dotenv->load(BASE_PATH.'/.env');
 $routes = include BASE_PATH.'/routes/web.php';
 $appEnv = $_ENV['APP_ENV'] ?? 'local';
 $viewsPath = BASE_PATH.'/views';
-$databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb4';
+$databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3654/itpelag_blog?charset=utf8mb4';
 
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));

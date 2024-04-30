@@ -34,6 +34,7 @@ class MigrateCommand implements CommandInterface
 
             $schema = new Schema();
 
+            $this->connection->commit();
             foreach ($migrationsToApply as $migration) {
                 $migrationInstance = require $this->migrationsPath."/$migration";
 
