@@ -10,11 +10,17 @@
     {% endif %}
     {% if isAuth() %}
         {% if isCreator(post.username) %}
-            <div class="d-flex justify-content-end">
+           <div class="d-flex justify-content-between align-items-center">
+                <form action="/posts/{{ post.id }}/like" method="post">
+                    <button type="submit" class="btn btn-danger">Лайк</button>
+                    <span class="badge bg-secondary rounded-pill fs-6">0</span>
+                </form>
+                <div class="d-flex align-items-center">
                     <a href="/posts/{{ post.id }}/edit" class="btn btn-primary me-2">Изменить пост</a>
                     <form action="/posts/{{ post.id }}/delete" method="post">
                         <button class="btn btn-danger">Удалить пост</button>
                     </form>
+                </div>
             </div>
         {% endif %}
     {% endif %}
