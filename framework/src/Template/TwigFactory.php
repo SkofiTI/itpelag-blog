@@ -31,6 +31,7 @@ class TwigFactory
         $twig->addExtension(new StringExtension());
         $twig->addExtension(new DebugExtension());
         $twig->addFunction(new TwigFunction('session', [$this, 'getSession']));
+        $twig->addFunction(new TwigFunction('auth', [$this, 'getSessionAuth']));
         $twig->addFunction(new TwigFunction('isAuth', [$this->sessionAuth, 'check']));
         $twig->addFunction(new TwigFunction('isCreator', [$this, 'isCreator']));
 
@@ -40,6 +41,11 @@ class TwigFactory
     public function getSession(): SessionInterface
     {
         return $this->session;
+    }
+
+    public function getSessionAuth(): SessionAuthInterface
+    {
+        return $this->sessionAuth;
     }
 
     public function isCreator(string $username): bool

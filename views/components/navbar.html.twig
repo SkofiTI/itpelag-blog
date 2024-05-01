@@ -15,9 +15,12 @@
 
             <div class="text-end">
                 {% if isAuth() %}
-                    <form action="/logout" method="post">
-                        <button href="/logout" class="btn btn-danger">Выход</button>
-                    </form>
+                    <div class="d-flex align-items-center">
+                        <span class="me-4">{{ auth().getUser().getUsername() }}</span>
+                        <form action="/logout" method="post">
+                            <button href="/logout" class="btn btn-danger">Выход</button>
+                        </form>
+                    </div>
                 {% else %}
                     <a href="/login" class="btn btn-outline-light me-2">Логин</a>
                     <a href="/register" class="btn btn-warning">Регистрация</a>
