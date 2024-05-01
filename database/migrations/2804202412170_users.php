@@ -21,8 +21,8 @@ return new class
         $table->addUniqueIndex(['username']);
     }
 
-    public function down(Schema $schema): void
+    public function down(): string
     {
-        //
+        return 'users';
     }
 };

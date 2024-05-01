@@ -3,6 +3,7 @@
 namespace Framework\Console\Commands;
 
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
 use Framework\Console\CommandInterface;
@@ -22,31 +23,52 @@ class MigrateCommand implements CommandInterface
     public function execute(array $parameters = []): int
     {
         try {
-            $this->createMigrationsTable();
+            $this->connection->setAutoCommit(false);
 
             $this->connection->beginTransaction();
 
-            $appliedMigrations = $this->getAppliedMigrations();
+            $schemaManager = $this->connection->createSchemaManager();
+
+            $this->createMigrationsTable($schemaManager);
 
             $migrationsFiles = $this->getMigrationFiles();
 
-            $migrationsToApply = array_values(array_diff($migrationsFiles, $appliedMigrations));
+            if (isset($parameters['rollback'])) {
+                $migrationsFiles = array_reverse($migrationsFiles);
 
-            $schema = new Schema();
+                foreach ($migrationsFiles as $migration) {
+                    $migrationInstance = require $this->migrationsPath."/$migration";
+
+                    $tableName = $migrationInstance->down();
+
+                    if ($schemaManager->tablesExist($tableName)) {
+                        $schemaManager->dropTable($tableName);
+                    }
+
+                    $this->deleteMigration($migration);
+                }
+            } else {
+                $appliedMigrations = $this->getAppliedMigrations();
+
+                $migrationsToApply = array_values(array_diff($migrationsFiles, $appliedMigrations));
+
+                foreach ($migrationsToApply as $migration) {
+                    $schema = new Schema();
+
+                    $migrationInstance = require $this->migrationsPath."/$migration";
+
+                    $migrationInstance->up($schema);
+
+                    $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
+
+                    $this->connection->executeQuery($sqlArray[0]);
+
+                    $this->addMigration($migration);
+                }
+            }
 
             $this->connection->commit();
-            foreach ($migrationsToApply as $migration) {
-                $migrationInstance = require $this->migrationsPath."/$migration";
 
-                $migrationInstance->up($schema);
-                $this->addMigration($migration);
-            }
-
-            $sqlArray = $schema->toSql($this->connection->getDatabasePlatform());
-
-            foreach ($sqlArray as $sql) {
-                $this->connection->executeQuery($sql);
-            }
         } catch (\Throwable $e) {
             $this->connection->rollBack();
 
@@ -56,10 +78,8 @@ class MigrateCommand implements CommandInterface
         return 0;
     }
 
-    private function createMigrationsTable(): void
+    private function createMigrationsTable(AbstractSchemaManager $schemaManager): void
     {
-        $schemaManager = $this->connection->createSchemaManager();
-
         if (! $schemaManager->tablesExist(self::MIGRATIONS_TABLE)) {
             $schema = new Schema();
 
@@ -112,5 +132,24 @@ class MigrateCommand implements CommandInterface
             ->values(['migration' => ':migration'])
             ->setParameter('migration', $migration)
             ->executeQuery();
+
+        echo "Migration $migration success created".PHP_EOL;
+    }
+
+    private function deleteMigration(string $migration): void
+    {
+        $queryBuilder = $this->connection->createQueryBuilder();
+
+        $result = $queryBuilder->delete(self::MIGRATIONS_TABLE)
+            ->where('migration = :migration')
+            ->setParameter('migration', $migration)
+            ->executeQuery()
+            ->rowCount();
+
+        if ($result === 1) {
+            $this->connection->executeQuery('ALTER TABLE '.self::MIGRATIONS_TABLE.' AUTO_INCREMENT = 1');
+
+            echo "Migration $migration success deleted".PHP_EOL;
+        }
     }
 }

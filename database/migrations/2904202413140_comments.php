@@ -24,8 +24,8 @@ return new class
         $table->addForeignKeyConstraint('posts', ['post_id'], ['id'], ['onDelete' => 'CASCADE']);
     }
 
-    public function down(Schema $schema): void
+    public function down(): string
     {
-        //
+        return 'comments';
     }
 };
