@@ -93,4 +93,14 @@ class PostForm implements FormInterface
     {
         return ! empty($this->getValidationErrors());
     }
+
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    public function getBody(): string
+    {
+        return $this->body;
+    }
 }

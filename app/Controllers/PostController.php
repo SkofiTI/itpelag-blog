@@ -25,9 +25,14 @@ class PostController extends AbstractController
     public function index()
     {
         $limit = 10;
+        $firstPage = 1;
         $totalPages = ceil(count($this->postService->getAll()) / $limit);
 
-        $page = $this->request->getParameters('page', 1);
+        $page = $this->request->getParameters('page', $firstPage);
+
+        if ($page < $firstPage) {
+            $page = $firstPage;
+        }
 
         if ($page > $totalPages && $totalPages > 0) {
             $page = $totalPages;
@@ -87,8 +92,8 @@ class PostController extends AbstractController
                 ->getSession()
                 ->setFlashArray([
                     'error' => 'Название поста должно быть уникальным!',
-                    'title' => $post->getTitle(),
-                    'body' => $post->getBody(),
+                    'title' => $form->getTitle(),
+                    'body' => $form->getBody(),
                 ]);
 
             return new RedirectResponse('/posts/create');
