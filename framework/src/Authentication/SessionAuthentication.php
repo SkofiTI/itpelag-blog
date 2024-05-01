@@ -2,6 +2,7 @@
 
 namespace Framework\Authentication;
 
+use Framework\Http\Exceptions\NotFoundedException;
 use Framework\Session\Session;
 use Framework\Session\SessionInterface;
 
@@ -14,9 +15,13 @@ class SessionAuthentication implements SessionAuthInterface
         private SessionInterface $session
     ) {
         if ($this->check()) {
-            $user = $this->userService->find($session->get(Session::AUTH_KEY));
+            try {
+                $user = $this->userService->findOrFail($session->get(Session::AUTH_KEY));
 
-            $this->login($user);
+                $this->login($user);
+            } catch (NotFoundedException $e) {
+                $this->logout();
+            }
         }
     }
 

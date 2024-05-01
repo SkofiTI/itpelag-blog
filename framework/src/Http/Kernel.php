@@ -14,7 +14,7 @@ class Kernel
         private ContainerInterface $container,
         private RequestHandlerInterface $requestHandler
     ) {
-        $this->appEnv = $this->container->get('APP_ENV');
+        $this->appEnv = getenv('APP_ENV') ?? 'production';
     }
 
     public function handle(Request $request): Response

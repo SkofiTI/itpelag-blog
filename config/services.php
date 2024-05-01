@@ -24,17 +24,20 @@ use Symfony\Component\Dotenv\Dotenv;
 use Twig\Environment;
 
 $dotenv = new Dotenv();
-$dotenv->load(BASE_PATH.'/.env');
+$dotenv->usePutenv()->bootEnv(BASE_PATH.'/.env');
 
 $routes = include BASE_PATH.'/routes/web.php';
-$appEnv = $_ENV['APP_ENV'] ?? 'local';
 $viewsPath = BASE_PATH.'/views';
-$databaseUrl = 'pdo-mysql://root:root@127.0.0.1:3306/itpelag_blog?charset=utf8mb4';
+
+$dbName = getenv('DB_NAME');
+$dbUser = getenv('DB_USER');
+$dbPassword = getenv('DB_PASSWORD');
+$dbHost = getenv('DB_HOST');
+$dbPort = getenv('DB_PORT');
+$databaseUrl = "pdo-mysql://$dbUser:$dbPassword@$dbHost:$dbPort/$dbName?charset=utf8mb4";
 
 $container = new Container();
 $container->delegate(new ReflectionContainer(true));
-
-$container->addShared('APP_ENV', new StringArgument($appEnv));
 
 $container->addShared(ContainerInterface::class, $container);
 
