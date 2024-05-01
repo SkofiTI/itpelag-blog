@@ -1,6 +1,8 @@
 {% extends 'layouts/base.html.twig' %}
 
 {% block main %}
+    <h3 class="mb-5">Изменить пост</h3>
+
     <form action="/posts/{{ post.id }}" method="post">
         <div class="mb-3">
             <label for="title" class="form-label h3">Заголовок</label>
