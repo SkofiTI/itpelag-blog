@@ -3,6 +3,7 @@
 namespace Framework\Console;
 
 use Framework\Console\Exceptions\ConsoleException;
+use Framework\Interfaces\Console\CommandInterface;
 use Psr\Container\ContainerInterface;
 
 class Application

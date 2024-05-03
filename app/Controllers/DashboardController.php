@@ -3,8 +3,8 @@
 namespace App\Controllers;
 
 use App\Services\PostService;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class DashboardController extends AbstractController
 {

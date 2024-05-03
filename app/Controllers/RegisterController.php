@@ -5,10 +5,10 @@ namespace App\Controllers;
 use App\Forms\User\RegisterForm;
 use App\Services\UserService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class RegisterController extends AbstractController
 {

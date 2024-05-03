@@ -3,7 +3,7 @@
 namespace Framework\Http;
 
 use Framework\Http\Exceptions\HttpException;
-use Framework\Http\Middleware\RequestHandlerInterface;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 
 class Kernel

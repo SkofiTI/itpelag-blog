@@ -7,10 +7,10 @@ use App\Services\CommentService;
 use App\Services\LikeService;
 use App\Services\PostService;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class PostController extends AbstractController
 {

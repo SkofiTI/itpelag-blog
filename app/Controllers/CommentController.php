@@ -5,10 +5,10 @@ namespace App\Controllers;
 use App\Entities\Comment;
 use App\Exceptions\LimitQueryException;
 use App\Services\CommentService;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class CommentController extends AbstractController
 {

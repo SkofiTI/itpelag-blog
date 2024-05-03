@@ -4,9 +4,9 @@ namespace App\Services;
 
 use App\Entities\User;
 use Doctrine\DBAL\Connection;
-use Framework\Authentication\AuthUserInterface;
-use Framework\Authentication\AuthUserServiceInterface;
 use Framework\Http\Exceptions\NotFoundedException;
+use Framework\Interfaces\Authentication\AuthUserInterface;
+use Framework\Interfaces\Authentication\AuthUserServiceInterface;
 
 class UserService implements AuthUserServiceInterface
 {
