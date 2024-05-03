@@ -43,8 +43,8 @@ class TwigFactory
         return $this->session;
     }
 
-    public function isCreator(string $username): bool
+    public function isCreator(int $userId): bool
     {
-        return $this->sessionAuth->getUser()->getUsername() === $username;
+        return $this->sessionAuth->getUser()->getId() === $userId;
     }
 }

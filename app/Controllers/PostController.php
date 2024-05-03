@@ -75,8 +75,10 @@ class PostController extends AbstractController
             userId: $user->getId(),
         );
 
-        if ($form->hasValidationErrors()) {
-            foreach ($form->getValidationErrors() as $error) {
+        $validationErrors = $form->getValidationErrors();
+
+        if (! empty($validationErrors)) {
+            foreach ($validationErrors as $error) {
                 $this->request
                     ->getSession()
                     ->setFlash('error', $error);
@@ -111,7 +113,7 @@ class PostController extends AbstractController
         $post = $this->postService->findOrFail($id);
         $userId = $this->sessionAuth->getUser()->getId();
 
-        if ($post['user_id'] != $userId) {
+        if ($post->getUserId() != $userId) {
             return new RedirectResponse('/');
         }
 
@@ -125,7 +127,7 @@ class PostController extends AbstractController
         $post = $this->postService->findOrFail($id);
         $userId = $this->sessionAuth->getUser()->getId();
 
-        if ($post['user_id'] != $userId) {
+        if ($post->getUserId() != $userId) {
             return new RedirectResponse('/');
         }
 
@@ -138,14 +140,16 @@ class PostController extends AbstractController
             id: $id
         );
 
-        if ($form->hasValidationErrors()) {
-            foreach ($form->getValidationErrors() as $error) {
+        $validationErrors = $form->getValidationErrors();
+
+        if (! empty($validationErrors)) {
+            foreach ($validationErrors as $error) {
                 $this->request
                     ->getSession()
                     ->setFlash('error', $error);
             }
 
-            return new RedirectResponse('/posts/create');
+            return new RedirectResponse("/posts/{$post->getId()}/edit");
         }
 
         try {
@@ -170,15 +174,15 @@ class PostController extends AbstractController
         $post = $this->postService->findOrFail($id);
         $userId = $this->sessionAuth->getUser()->getId();
 
-        if ($post['user_id'] != $userId) {
+        if ($post->getUserId() != $userId) {
             return new RedirectResponse('/');
         }
 
         $form = new PostForm($this->postService);
 
         $form->setFields(
-            $post['title'],
-            $post['body'],
+            $post->getTitle(),
+            $post->getBody(),
             userId: $userId,
             id: $id,
         );

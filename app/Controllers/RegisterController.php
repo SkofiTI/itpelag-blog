@@ -33,8 +33,10 @@ class RegisterController extends AbstractController
             passwordConfirmation: $this->request->getPostData('password_confirmation'),
         );
 
-        if ($form->hasValidationErrors()) {
-            foreach ($form->getValidationErrors() as $error) {
+        $validationErrors = $form->getValidationErrors();
+
+        if (! empty($validationErrors)) {
+            foreach ($validationErrors as $error) {
                 $this->request
                     ->getSession()
                     ->setFlash('error', $error);
