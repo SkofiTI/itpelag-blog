@@ -4,7 +4,7 @@ namespace App\Services;
 
 use App\Entities\Like;
 use Doctrine\DBAL\Connection;
-use Framework\Authentication\SessionAuthInterface;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class LikeService
 {

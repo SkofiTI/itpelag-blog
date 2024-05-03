@@ -4,7 +4,9 @@ namespace Framework\Http\Middleware;
 
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Session\SessionInterface;
+use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
+use Framework\Interfaces\Session\SessionInterface;
 
 class StartSession implements MiddlewareInterface
 {

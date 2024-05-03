@@ -2,10 +2,12 @@
 
 namespace Framework\Http\Middleware;
 
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
+use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 
 class Authenticate implements MiddlewareInterface
 {

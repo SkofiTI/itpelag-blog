@@ -2,10 +2,10 @@
 
 namespace App\Controllers;
 
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class LoginController extends AbstractController
 {

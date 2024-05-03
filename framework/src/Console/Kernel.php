@@ -2,6 +2,7 @@
 
 namespace Framework\Console;
 
+use Framework\Interfaces\Console\CommandInterface;
 use Psr\Container\ContainerInterface;
 
 class Kernel

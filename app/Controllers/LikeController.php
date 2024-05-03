@@ -4,30 +4,28 @@ namespace App\Controllers;
 
 use App\Entities\Like;
 use App\Services\LikeService;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Controller\AbstractController;
 use Framework\Http\RedirectResponse;
 use Framework\Http\Response;
+use Framework\Interfaces\Authentication\AuthUserInterface;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class LikeController extends AbstractController
 {
+    private AuthUserInterface $user;
+
     public function __construct(
         private SessionAuthInterface $sessionAuth,
         private LikeService $likeService,
     ) {
+        $this->user = $this->sessionAuth->getUser();
     }
 
     public function store(): Response
     {
-        if (! $this->sessionAuth->check()) {
-            return new RedirectResponse('/login');
-        }
-
-        $user = $this->sessionAuth->getUser();
-
         $like = Like::create(
             $this->request->getPostData('post_id'),
-            $user->getId(),
+            $this->user->getId(),
         );
 
         $this->likeService->store($like);
@@ -37,15 +35,9 @@ class LikeController extends AbstractController
 
     public function delete(): Response
     {
-        if (! $this->sessionAuth->check()) {
-            return new RedirectResponse('/login');
-        }
-
-        $user = $this->sessionAuth->getUser();
-
         $like = Like::create(
             $this->request->getPostData('post_id'),
-            $user->getId(),
+            $this->user->getId(),
         );
 
         $this->likeService->delete($like);

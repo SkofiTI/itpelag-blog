@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Routing;
+namespace Framework\Interfaces\Routing;
 
 use Framework\Http\Request;
 

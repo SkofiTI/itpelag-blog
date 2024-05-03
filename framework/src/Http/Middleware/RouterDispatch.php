@@ -4,7 +4,9 @@ namespace Framework\Http\Middleware;
 
 use Framework\Http\Request;
 use Framework\Http\Response;
-use Framework\Routing\RouterInterface;
+use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
+use Framework\Interfaces\Routing\RouterInterface;
 
 class RouterDispatch implements MiddlewareInterface
 {

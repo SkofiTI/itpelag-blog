@@ -1,6 +1,6 @@
 <?php
 
-namespace Framework\Authentication;
+namespace Framework\Interfaces\Authentication;
 
 interface AuthUserInterface
 {

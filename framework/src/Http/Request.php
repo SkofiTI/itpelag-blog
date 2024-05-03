@@ -2,7 +2,7 @@
 
 namespace Framework\Http;
 
-use Framework\Session\SessionInterface;
+use Framework\Interfaces\Session\SessionInterface;
 
 class Request
 {

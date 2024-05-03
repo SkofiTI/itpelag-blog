@@ -2,6 +2,8 @@
 
 namespace Framework\Session;
 
+use Framework\Interfaces\Session\SessionInterface;
+
 class Session implements SessionInterface
 {
     private const FLASH_KEY = 'flash';

@@ -6,7 +6,7 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Schema\AbstractSchemaManager;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Types\Types;
-use Framework\Console\CommandInterface;
+use Framework\Interfaces\Console\CommandInterface;
 
 class MigrateCommand implements CommandInterface
 {

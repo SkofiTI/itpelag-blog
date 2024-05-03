@@ -4,8 +4,8 @@ namespace App\Services;
 
 use App\Entities\Post;
 use Doctrine\DBAL\Connection;
-use Framework\Authentication\SessionAuthInterface;
 use Framework\Http\Exceptions\NotFoundedException;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
 
 class PostService
 {

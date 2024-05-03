@@ -2,7 +2,7 @@
 
 namespace App\Entities;
 
-use Framework\Authentication\AuthUserInterface;
+use Framework\Interfaces\Authentication\AuthUserInterface;
 
 class User implements AuthUserInterface
 {

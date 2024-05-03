@@ -3,8 +3,11 @@
 namespace Framework\Authentication;
 
 use Framework\Http\Exceptions\NotFoundedException;
+use Framework\Interfaces\Authentication\AuthUserInterface;
+use Framework\Interfaces\Authentication\AuthUserServiceInterface;
+use Framework\Interfaces\Authentication\SessionAuthInterface;
+use Framework\Interfaces\Session\SessionInterface;
 use Framework\Session\Session;
-use Framework\Session\SessionInterface;
 
 class SessionAuthentication implements SessionAuthInterface
 {

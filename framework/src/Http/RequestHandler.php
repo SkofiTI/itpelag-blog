@@ -1,9 +1,11 @@
 <?php
 
-namespace Framework\Http\Middleware;
+namespace Framework\Http;
 
-use Framework\Http\Request;
-use Framework\Http\Response;
+use Framework\Http\Middleware\ExtractRouteInfo;
+use Framework\Http\Middleware\RouterDispatch;
+use Framework\Http\Middleware\StartSession;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 use Psr\Container\ContainerInterface;
 
 class RequestHandler implements RequestHandlerInterface

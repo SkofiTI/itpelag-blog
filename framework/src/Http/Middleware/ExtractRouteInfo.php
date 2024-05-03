@@ -8,6 +8,8 @@ use Framework\Http\Exceptions\MethodNotAllowedException;
 use Framework\Http\Exceptions\RouteNotFoundException;
 use Framework\Http\Request;
 use Framework\Http\Response;
+use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
+use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 
 use function FastRoute\simpleDispatcher;
 

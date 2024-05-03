@@ -4,6 +4,7 @@ namespace Framework\Routing;
 
 use Framework\Controller\AbstractController;
 use Framework\Http\Request;
+use Framework\Interfaces\Routing\RouterInterface;
 use Psr\Container\ContainerInterface;
 
 class Router implements RouterInterface
@@ -20,6 +21,7 @@ class Router implements RouterInterface
 
         if (is_array($handler)) {
             [$controllerId, $method] = $handler;
+
             $controller = $this->container->get($controllerId);
 
             if (is_subclass_of($controller, AbstractController::class)) {
