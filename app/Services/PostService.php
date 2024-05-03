@@ -74,7 +74,7 @@ class PostService
             ->executeQuery();
     }
 
-    public function find(int $id): ?array
+    public function find(int $id): ?Post
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
@@ -85,12 +85,10 @@ class PostService
                 'p.title',
                 'p.body',
                 'p.created_at',
-                'u.username',
             ])
             ->from('posts', 'p')
             ->where('p.id = :id')
             ->setParameter('id', $id)
-            ->join('p', 'users', 'u', 'u.id = p.user_id')
             ->executeQuery();
 
         $postData = $result->fetchAssociative();
@@ -99,10 +97,16 @@ class PostService
             return null;
         }
 
-        return $postData;
+        return Post::create(
+            id: $postData['id'],
+            userId: $postData['user_id'],
+            title: $postData['title'],
+            body: $postData['body'],
+            createdAt: new \DateTimeImmutable($postData['created_at']),
+        );
     }
 
-    public function findOrFail(int $id): array
+    public function findOrFail(int $id): Post
     {
         $post = $this->find($id);
 
