@@ -178,4 +178,12 @@ class PostService
 
         return $result->fetchAllAssociative();
     }
+
+    public function isCreator(int $id): bool
+    {
+        $post = $this->findOrFail($id);
+        $userId = $this->sessionAuth->getUser()->getId();
+
+        return $post->getUserId() === $userId;
+    }
 }

@@ -5,6 +5,7 @@ namespace App\Forms\User;
 use App\Entities\User;
 use App\Interfaces\FormInterface;
 use App\Services\UserService;
+use Framework\Http\Request;
 
 class RegisterForm implements FormInterface
 {
@@ -13,6 +14,8 @@ class RegisterForm implements FormInterface
     private string $password;
 
     private string $passwordConfirmation;
+
+    private array $errors = [];
 
     public function __construct(
         private UserService $userService
@@ -38,27 +41,33 @@ class RegisterForm implements FormInterface
         return $user;
     }
 
-    public function getValidationErrors(): array
+    public function validate(): void
     {
-        $errors = [];
-
         if (empty($this->username)) {
-            $errors[] = 'Имя пользователя является обязательным полем';
+            $this->errors[] = 'Имя пользователя является обязательным полем';
+        }
+
+        $usernameLength = mb_strlen($this->username);
+        if ($usernameLength < 3 || $usernameLength > 255) {
+            $this->errors[] = 'Имя пользователя не может быть короче 3-х и длиннее 255 символов';
         }
 
         if (empty($this->password) || strlen($this->password) < 8) {
-            $errors[] = 'Минимальная длина пароля 8 символов';
+            $this->errors[] = 'Минимальная длина пароля 8 символов';
         }
 
         if ($this->password !== $this->passwordConfirmation) {
-            $errors[] = 'Пароли не совпадают';
+            $this->errors[] = 'Пароли не совпадают';
         }
-
-        return $errors;
     }
 
     public function hasValidationErrors(): bool
     {
-        return ! empty($this->getValidationErrors());
+        return ! empty($this->errors);
+    }
+
+    public function getValidationErrors(): array
+    {
+        return $this->errors;
     }
 }

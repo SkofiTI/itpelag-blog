@@ -35,14 +35,19 @@ class Session implements SessionInterface
         unset($_SESSION[$key]);
     }
 
-    public function setFlash(string $type, string $message): void
+    public function setFlash(string $type, string|array $messages): void
     {
         $flash = $this->get(self::FLASH_KEY, []);
 
-        $flash[$type][] = $message;
+        if (is_array($messages)) {
+            foreach ($messages as $message) {
+                $flash[$type][] = $message;
+            }
+        } else {
+            $flash[$type][] = $messages;
+        }
 
         $this->set(self::FLASH_KEY, $flash);
-
     }
 
     public function setFlashArray(array $messages): void

@@ -27,7 +27,7 @@ class UserService implements AuthUserServiceInterface
                 'created_at' => ':created_at',
             ])
             ->setParameters([
-                'username' => $user->getUsername(),
+                'username' => $user->getLogin(),
                 'password' => $user->getPassword(),
                 'created_at' => $user->getCreatedAt()->format('Y-m-d H:i:s'),
             ])

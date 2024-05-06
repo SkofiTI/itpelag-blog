@@ -6,7 +6,7 @@ interface AuthUserInterface
 {
     public function getId(): int;
 
-    public function getUsername(): string;
+    public function getLogin(): string;
 
     public function getPassword(): string;
 }

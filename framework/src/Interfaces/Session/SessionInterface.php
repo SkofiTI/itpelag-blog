@@ -14,7 +14,7 @@ interface SessionInterface
 
     public function remove(string $key): void;
 
-    public function setFlash(string $type, string $message): void;
+    public function setFlash(string $type, string|array $messages): void;
 
     public function setFlashArray(array $messages): void;
 

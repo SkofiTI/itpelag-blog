@@ -6,5 +6,5 @@ interface FormInterface
 {
     public function getValidationErrors(): array;
 
-    public function hasValidationErrors(): bool;
+    public function validate(): void;
 }

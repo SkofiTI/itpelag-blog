@@ -6,6 +6,7 @@ use App\Controllers\LikeController;
 use App\Controllers\LoginController;
 use App\Controllers\PostController;
 use App\Controllers\RegisterController;
+use App\Middlewares\PostCreator;
 use Framework\Http\Middleware\Authenticate;
 use Framework\Http\Middleware\Guest;
 use Framework\Routing\Route;
@@ -15,9 +16,9 @@ return [
     Route::get('/posts/{id:\d+}', [PostController::class, 'show']),
     Route::get('/posts/create', [PostController::class, 'create'], [Authenticate::class]),
     Route::post('/posts', [PostController::class, 'store'], [Authenticate::class]),
-    Route::get('/posts/{id:\d+}/edit', [PostController::class, 'edit'], [Authenticate::class]),
-    Route::post('/posts/{id:\d+}', [PostController::class, 'update'], [Authenticate::class]),
-    Route::post('/posts/{id:\d+}/delete', [PostController::class, 'delete'], [Authenticate::class]),
+    Route::get('/posts/{id:\d+}/edit', [PostController::class, 'edit'], [Authenticate::class, PostCreator::class]),
+    Route::post('/posts/{id:\d+}', [PostController::class, 'update'], [Authenticate::class, PostCreator::class]),
+    Route::post('/posts/{id:\d+}/delete', [PostController::class, 'delete'], [Authenticate::class, PostCreator::class]),
     Route::post('/comments/create', [CommentController::class, 'store'], [Authenticate::class]),
     Route::post('/likes/create', [LikeController::class, 'store'], [Authenticate::class]),
     Route::post('/likes/delete', [LikeController::class, 'delete'], [Authenticate::class]),
