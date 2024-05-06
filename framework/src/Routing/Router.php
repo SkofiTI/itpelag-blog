@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 class Router implements RouterInterface
 {
     public function __construct(
-        private ContainerInterface $container,
+        private readonly ContainerInterface $container,
     ) {
     }
 

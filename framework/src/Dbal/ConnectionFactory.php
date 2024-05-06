@@ -5,19 +5,17 @@ namespace Framework\Dbal;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
-class ConnectionFactory
+readonly class ConnectionFactory
 {
     public function __construct(
-        private readonly string $connectionUrl
+        private string $connectionUrl
     ) {
     }
 
     public function create(): Connection
     {
-        $connection = DriverManager::getConnection([
+        return DriverManager::getConnection([
             'url' => $this->connectionUrl,
         ]);
-
-        return $connection;
     }
 }

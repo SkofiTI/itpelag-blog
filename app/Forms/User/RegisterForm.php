@@ -18,7 +18,7 @@ class RegisterForm implements FormInterface
     private array $errors = [];
 
     public function __construct(
-        private UserService $userService
+        private readonly UserService $userService
     ) {
     }
 
@@ -36,9 +36,7 @@ class RegisterForm implements FormInterface
             password: password_hash($this->password, PASSWORD_DEFAULT),
         );
 
-        $user = $this->userService->store($user);
-
-        return $user;
+        return $this->userService->store($user);
     }
 
     public function validate(): void

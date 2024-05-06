@@ -12,11 +12,11 @@ class MigrateCommand implements CommandInterface
 {
     private string $name = 'migrate';
 
-    private const MIGRATIONS_TABLE = 'migrations';
+    private const string MIGRATIONS_TABLE = 'migrations';
 
     public function __construct(
-        private Connection $connection,
-        private string $migrationsPath
+        private readonly Connection $connection,
+        private readonly string $migrationsPath
     ) {
     }
 

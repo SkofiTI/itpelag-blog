@@ -8,7 +8,7 @@ use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
 use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 use Framework\Interfaces\Routing\RouterInterface;
 
-class RouterDispatch implements MiddlewareInterface
+readonly class RouterDispatch implements MiddlewareInterface
 {
     public function __construct(
         private RouterInterface $router
@@ -19,8 +19,6 @@ class RouterDispatch implements MiddlewareInterface
     {
         [$routeHandler, $vars] = $this->router->dispatch($request);
 
-        $response = call_user_func_array($routeHandler, $vars);
-
-        return $response;
+        return call_user_func_array($routeHandler, $vars);
     }
 }

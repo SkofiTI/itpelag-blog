@@ -7,11 +7,11 @@ use Psr\Container\ContainerInterface;
 
 class Kernel
 {
-    const COMMAND_NAMESPACE = 'Framework\\Console\\Commands\\';
+    const string COMMAND_NAMESPACE = 'Framework\\Console\\Commands\\';
 
     public function __construct(
-        private ContainerInterface $container,
-        private Application $application
+        private readonly ContainerInterface $container,
+        private readonly Application $application
     ) {
     }
 
@@ -19,9 +19,7 @@ class Kernel
     {
         $this->registerCommands();
 
-        $status = $this->application->run();
-
-        return $status;
+        return $this->application->run();
     }
 
     private function registerCommands(): void

@@ -15,15 +15,15 @@ use Framework\Interfaces\Authentication\SessionAuthInterface;
 class PostController extends AbstractController
 {
     public function __construct(
-        private PostService $postService,
-        private CommentService $commentService,
-        private LikeService $likeService,
-        private SessionAuthInterface $sessionAuth,
-        private PostForm $form,
+        private readonly PostService $postService,
+        private readonly CommentService $commentService,
+        private readonly LikeService $likeService,
+        private readonly SessionAuthInterface $sessionAuth,
+        private readonly PostForm $form,
     ) {
     }
 
-    public function index()
+    public function index(): Response
     {
         $limit = 10;
         $firstPage = 1;
@@ -49,7 +49,7 @@ class PostController extends AbstractController
     public function show(int $id): Response
     {
         $userId = $this->sessionAuth->check() ? $this->sessionAuth->getUser()->getId() : null;
-        $userHasLike = $userId ? $this->likeService->hasLike($id, $userId) : false;
+        $userHasLike = $userId && $this->likeService->hasLike($id, $userId);
 
         return $this->render('show.html.twig', [
             'post' => $this->postService->findOrFail($id),

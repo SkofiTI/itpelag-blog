@@ -13,8 +13,8 @@ use Framework\Interfaces\Authentication\SessionAuthInterface;
 class CommentController extends AbstractController
 {
     public function __construct(
-        private CommentService $commentService,
-        private SessionAuthInterface $sessionAuth
+        private readonly CommentService $commentService,
+        private readonly SessionAuthInterface $sessionAuth
     ) {
     }
 

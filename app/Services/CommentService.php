@@ -5,13 +5,11 @@ namespace App\Services;
 use App\Entities\Comment;
 use App\Exceptions\LimitQueryException;
 use Doctrine\DBAL\Connection;
-use Framework\Interfaces\Authentication\SessionAuthInterface;
 
-class CommentService
+readonly class CommentService
 {
     public function __construct(
         private Connection $connection,
-        private SessionAuthInterface $sessionAuth
     ) {
     }
 
@@ -68,7 +66,7 @@ class CommentService
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'c.id',
                 'c.content',
@@ -80,16 +78,15 @@ class CommentService
             ->where('c.post_id = :post_id')
             ->setParameter('post_id', $postId)
             ->orderBy('c.created_at', $sortOrder)
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     public function getLastByUser(int $postId, int $userId): array|false
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'c.id',
                 'c.content',
@@ -106,16 +103,15 @@ class CommentService
             ])
             ->setMaxResults(1)
             ->orderBy('created_at', 'DESC')
-            ->executeQuery();
-
-        return $result->fetchAssociative();
+            ->executeQuery()
+            ->fetchAssociative();
     }
 
     public function getWithLimit(int $postId, int $limit, string $sortOrder = 'DESC'): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'c.id',
                 'c.content',
@@ -128,8 +124,7 @@ class CommentService
             ->setParameter('post_id', $postId)
             ->setMaxResults($limit)
             ->orderBy('created_at', $sortOrder)
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 }

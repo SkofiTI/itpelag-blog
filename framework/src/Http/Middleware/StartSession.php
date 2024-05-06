@@ -8,7 +8,7 @@ use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
 use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 use Framework\Interfaces\Session\SessionInterface;
 
-class StartSession implements MiddlewareInterface
+readonly class StartSession implements MiddlewareInterface
 {
     public function __construct(
         private SessionInterface $session

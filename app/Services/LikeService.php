@@ -6,11 +6,10 @@ use App\Entities\Like;
 use Doctrine\DBAL\Connection;
 use Framework\Interfaces\Authentication\SessionAuthInterface;
 
-class LikeService
+readonly class LikeService
 {
     public function __construct(
         private Connection $connection,
-        private SessionAuthInterface $sessionAuth
     ) {
     }
 
@@ -50,37 +49,34 @@ class LikeService
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select('*')
             ->from('likes', 'l')
             ->where('post_id = :post_id')
             ->setParameter('post_id', $postId)
             ->executeQuery()
             ->rowCount();
-
-        return $result;
     }
 
     public function getAllByPost(int $postId): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select('*')
             ->from('likes', 'l')
             ->join('l', 'posts', 'p', 'p.id = l.user_id')
             ->where('l.post_id = :post_id')
             ->setParameter('post_id', $postId)
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     public function hasLike(int $postId, int $userId): bool
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return (bool) $queryBuilder
             ->select('*')
             ->from('likes', 'l')
             ->where('user_id = :user_id')
@@ -91,7 +87,5 @@ class LikeService
             ])
             ->executeQuery()
             ->fetchOne();
-
-        return (bool) $result;
     }
 }
