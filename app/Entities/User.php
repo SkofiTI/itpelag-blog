@@ -33,7 +33,7 @@ class User implements AuthUserInterface
         return $this->id;
     }
 
-    public function getUsername(): string
+    public function getLogin(): string
     {
         return $this->username;
     }

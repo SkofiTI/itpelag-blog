@@ -18,7 +18,8 @@ class PostController extends AbstractController
         private PostService $postService,
         private CommentService $commentService,
         private LikeService $likeService,
-        private SessionAuthInterface $sessionAuth
+        private SessionAuthInterface $sessionAuth,
+        private PostForm $form,
     ) {
     }
 
@@ -67,35 +68,31 @@ class PostController extends AbstractController
     {
         $user = $this->sessionAuth->getUser();
 
-        $form = new PostForm($this->postService);
-
-        $form->setFields(
+        $this->form->setFields(
             title: $this->request->getPostData('title'),
             body: $this->request->getPostData('body'),
             userId: $user->getId(),
         );
+        
+        $this->form->validate();
 
-        $validationErrors = $form->getValidationErrors();
-
-        if (! empty($validationErrors)) {
-            foreach ($validationErrors as $error) {
-                $this->request
-                    ->getSession()
-                    ->setFlash('error', $error);
-            }
+        if ($this->form->hasValidationErrors()) {
+            $this->request
+                ->getSession()
+                ->setFlash('error', $this->form->getValidationErrors());
 
             return new RedirectResponse('/posts/create');
         }
 
         try {
-            $post = $form->save();
+            $post = $this->form->save();
         } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
                 ->setFlashArray([
                     'error' => 'Название поста должно быть уникальным!',
-                    'title' => $form->getTitle(),
-                    'body' => $form->getBody(),
+                    'title' => $this->form->getTitle(),
+                    'body' => $this->form->getBody(),
                 ]);
 
             return new RedirectResponse('/posts/create');
@@ -110,56 +107,38 @@ class PostController extends AbstractController
 
     public function edit(int $id): Response
     {
-        $post = $this->postService->findOrFail($id);
-        $userId = $this->sessionAuth->getUser()->getId();
-
-        if ($post->getUserId() != $userId) {
-            return new RedirectResponse('/');
-        }
-
         return $this->render('edit.html.twig', [
-            'post' => $post,
+            'post' => $this->postService->findOrFail($id),
         ]);
     }
 
     public function update(int $id): Response
     {
-        $post = $this->postService->findOrFail($id);
-        $userId = $this->sessionAuth->getUser()->getId();
-
-        if ($post->getUserId() != $userId) {
-            return new RedirectResponse('/');
-        }
-
-        $form = new PostForm($this->postService);
-
-        $form->setFields(
+        $this->form->setFields(
             title: $this->request->getPostData('title'),
             body: $this->request->getPostData('body'),
-            userId: $userId,
+            userId: $this->sessionAuth->getUser()->getId(),
             id: $id
         );
 
-        $validationErrors = $form->getValidationErrors();
+        $this->form->validate();
 
-        if (! empty($validationErrors)) {
-            foreach ($validationErrors as $error) {
-                $this->request
-                    ->getSession()
-                    ->setFlash('error', $error);
-            }
+        if ($this->form->hasValidationErrors()) {
+            $this->request
+                ->getSession()
+                ->setFlash('error', $this->form->getValidationErrors());
 
-            return new RedirectResponse("/posts/{$post->getId()}/edit");
+            return new RedirectResponse("/posts/$id/edit");
         }
 
         try {
-            $post = $form->update();
+            $post = $this->form->update();
         } catch (UniqueConstraintViolationException $e) {
             $this->request
                 ->getSession()
                 ->setFlash('error', 'Название поста должно быть уникальным!');
 
-            return new RedirectResponse("/posts/{$post->getId()}/edit");
+            return new RedirectResponse("/posts/$id/edit");
         }
 
         $this->request
@@ -174,20 +153,14 @@ class PostController extends AbstractController
         $post = $this->postService->findOrFail($id);
         $userId = $this->sessionAuth->getUser()->getId();
 
-        if ($post->getUserId() != $userId) {
-            return new RedirectResponse('/');
-        }
-
-        $form = new PostForm($this->postService);
-
-        $form->setFields(
+        $this->form->setFields(
             $post->getTitle(),
             $post->getBody(),
             userId: $userId,
             id: $id,
         );
 
-        $form->delete();
+        $this->form->delete();
 
         $this->request
             ->getSession()
