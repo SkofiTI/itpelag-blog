@@ -9,7 +9,7 @@ use Framework\Interfaces\Authentication\SessionAuthInterface;
 use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
 use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 
-class Authenticate implements MiddlewareInterface
+readonly class Authenticate implements MiddlewareInterface
 {
     public function __construct(
         private SessionAuthInterface $sessionAuth,

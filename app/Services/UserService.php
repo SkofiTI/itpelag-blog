@@ -8,7 +8,7 @@ use Framework\Http\Exceptions\NotFoundedException;
 use Framework\Interfaces\Authentication\AuthUserInterface;
 use Framework\Interfaces\Authentication\AuthUserServiceInterface;
 
-class UserService implements AuthUserServiceInterface
+readonly class UserService implements AuthUserServiceInterface
 {
     public function __construct(
         private Connection $connection

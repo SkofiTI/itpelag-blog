@@ -16,11 +16,11 @@ class PostForm implements FormInterface
     private int $userId;
 
     private ?int $id;
+
     private array $errors = [];
 
     public function __construct(
-        private PostService $postService,
-        private SessionInterface $session,
+        private readonly PostService $postService,
     ) {
     }
 
@@ -41,9 +41,7 @@ class PostForm implements FormInterface
             $this->id,
         );
 
-        $post = $this->postService->store($post);
-
-        return $post;
+        return $this->postService->store($post);
     }
 
     public function update(): Post
@@ -55,9 +53,7 @@ class PostForm implements FormInterface
             $this->id,
         );
 
-        $post = $this->postService->update($post);
-
-        return $post;
+        return $this->postService->update($post);
     }
 
     public function delete(): void

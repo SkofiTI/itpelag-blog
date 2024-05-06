@@ -4,10 +4,11 @@ namespace App\Services;
 
 use App\Entities\Post;
 use Doctrine\DBAL\Connection;
+use Doctrine\DBAL\Exception;
 use Framework\Http\Exceptions\NotFoundedException;
 use Framework\Interfaces\Authentication\SessionAuthInterface;
 
-class PostService
+readonly class PostService
 {
     public function __construct(
         private Connection $connection,
@@ -15,6 +16,9 @@ class PostService
     ) {
     }
 
+    /**
+     * @throws Exception
+     */
     public function store(Post $post): Post
     {
         $queryBuilder = $this->connection->createQueryBuilder();
@@ -98,10 +102,10 @@ class PostService
         }
 
         return Post::create(
-            id: $postData['id'],
-            userId: $postData['user_id'],
             title: $postData['title'],
             body: $postData['body'],
+            userId: $postData['user_id'],
+            id: $postData['id'],
             createdAt: new \DateTimeImmutable($postData['created_at']),
         );
     }
@@ -121,7 +125,7 @@ class PostService
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'p.id',
                 'p.title',
@@ -132,16 +136,15 @@ class PostService
             ->from('posts', 'p')
             ->join('p', 'users', 'u', 'u.id = p.user_id')
             ->orderBy('p.created_at', 'ASC')
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     public function getAllPaginate(int $page, int $limit): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'p.id',
                 'p.title',
@@ -154,16 +157,15 @@ class PostService
             ->orderBy('p.created_at', 'ASC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit)
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     public function getAllByUser(int $userId): array
     {
         $queryBuilder = $this->connection->createQueryBuilder();
 
-        $result = $queryBuilder
+        return $queryBuilder
             ->select([
                 'p.id',
                 'p.title',
@@ -174,14 +176,18 @@ class PostService
             ->where('user_id = :user_id')
             ->setParameter('user_id', $userId)
             ->orderBy('p.created_at', 'ASC')
-            ->executeQuery();
-
-        return $result->fetchAllAssociative();
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 
     public function isCreator(int $id): bool
     {
-        $post = $this->findOrFail($id);
+        try {
+            $post = $this->findOrFail($id);
+        } catch (NotFoundedException $e) {
+            return false;
+        }
+
         $userId = $this->sessionAuth->getUser()->getId();
 
         return $post->getUserId() === $userId;

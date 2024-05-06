@@ -14,8 +14,8 @@ class SessionAuthentication implements SessionAuthInterface
     private AuthUserInterface $user;
 
     public function __construct(
-        private AuthUserServiceInterface $userService,
-        private SessionInterface $session
+        private readonly AuthUserServiceInterface $userService,
+        private readonly SessionInterface $session
     ) {
         if ($this->check()) {
             try {
@@ -52,7 +52,7 @@ class SessionAuthentication implements SessionAuthInterface
         $this->user = $user;
     }
 
-    public function logout()
+    public function logout(): void
     {
         $this->session->remove(Session::AUTH_KEY);
     }

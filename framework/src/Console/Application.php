@@ -6,7 +6,7 @@ use Framework\Console\Exceptions\ConsoleException;
 use Framework\Interfaces\Console\CommandInterface;
 use Psr\Container\ContainerInterface;
 
-class Application
+readonly class Application
 {
     public function __construct(
         private ContainerInterface $container
@@ -28,9 +28,7 @@ class Application
         /** @var CommandInterface $command */
         $command = $this->container->get("console:$commandName");
 
-        $status = $command->execute($options);
-
-        return $status;
+        return $command->execute($options);
     }
 
     private function parseOptions(array $args): array

@@ -10,12 +10,12 @@ use Twig\Extra\String\StringExtension;
 use Twig\Loader\FilesystemLoader;
 use Twig\TwigFunction;
 
-class TwigFactory
+readonly class TwigFactory
 {
     public function __construct(
-        private readonly string $viewsPath,
-        private readonly SessionInterface $session,
-        private readonly SessionAuthInterface $sessionAuth
+        private string               $viewsPath,
+        private SessionInterface     $session,
+        private SessionAuthInterface $sessionAuth
     ) {
     }
 

@@ -10,7 +10,7 @@ use Framework\Interfaces\Authentication\SessionAuthInterface;
 class LoginController extends AbstractController
 {
     public function __construct(
-        private SessionAuthInterface $sessionAuth
+        private readonly SessionAuthInterface $sessionAuth
     ) {
     }
 

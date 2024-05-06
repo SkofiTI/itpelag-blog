@@ -15,8 +15,8 @@ class LikeController extends AbstractController
     private AuthUserInterface $user;
 
     public function __construct(
-        private SessionAuthInterface $sessionAuth,
-        private LikeService $likeService,
+        private readonly SessionAuthInterface $sessionAuth,
+        private readonly LikeService $likeService,
     ) {
         $this->user = $this->sessionAuth->getUser();
     }

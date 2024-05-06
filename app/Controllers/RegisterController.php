@@ -13,8 +13,8 @@ use Framework\Interfaces\Authentication\SessionAuthInterface;
 class RegisterController extends AbstractController
 {
     public function __construct(
-        private UserService $userService,
-        private SessionAuthInterface $sessionAuth
+        private readonly UserService $userService,
+        private readonly SessionAuthInterface $sessionAuth
     ) {
     }
 

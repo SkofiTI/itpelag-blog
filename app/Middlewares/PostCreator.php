@@ -9,7 +9,7 @@ use Framework\Http\Response;
 use Framework\Interfaces\Http\Middleware\MiddlewareInterface;
 use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 
-class PostCreator implements MiddlewareInterface
+readonly class PostCreator implements MiddlewareInterface
 {
     public function __construct(
         private PostService $postService,

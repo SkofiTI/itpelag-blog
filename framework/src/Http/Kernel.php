@@ -11,8 +11,7 @@ class Kernel
     private string $appEnv = '';
 
     public function __construct(
-        private ContainerInterface $container,
-        private RequestHandlerInterface $requestHandler
+        private readonly RequestHandlerInterface $requestHandler
     ) {
         $this->appEnv = getenv('APP_ENV') ?? 'production';
     }

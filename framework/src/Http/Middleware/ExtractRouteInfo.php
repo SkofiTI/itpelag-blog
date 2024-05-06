@@ -13,7 +13,7 @@ use Framework\Interfaces\Http\Middleware\RequestHandlerInterface;
 
 use function FastRoute\simpleDispatcher;
 
-class ExtractRouteInfo implements MiddlewareInterface
+readonly class ExtractRouteInfo implements MiddlewareInterface
 {
     public function __construct(
         private array $routes
